@@ -1,0 +1,4 @@
+#Ignore rules for backend:
+Backend/BackendVenv
+
+#Ignore rules for frontend:

@@ -27,3 +27,14 @@
 ### Deactivate venv
 
 1.Type `deactivate`
+
+# Frontend
+
+NONE
+
+# RESTful API
+
+
+|Type|Address|Header|
+|--|--|--|
+|GET|http://127.0.0.1:5000/ |{ budget: Integer, distance: Integer, people: Integer, purpose: String, time: Float, transportation: String, priority: ???  }|

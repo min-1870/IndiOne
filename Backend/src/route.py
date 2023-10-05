@@ -1,8 +1,6 @@
-import os
-import json
-import requests
 import random
-
+import googleMapsApi
+import math
 
 TYPES = {
     "amusement_park": {
@@ -139,48 +137,48 @@ FRIENDS_TYPES = [
     "zoo"
 ]
 
+MEAL_TIMES = [
+        {"startTime":6, "endTime": 9},
+        {"startTime":11, "endTime": 14},
+        {"startTime":18, "endTime": 21},
+]
 
-NEARBYSEARCH_URL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json"
+
+#========================================================================fetching functions
 
 
-def getApi():
-    file_path = os.path.join(os.path.dirname(os.path.dirname(os.path.realpath(__file__))), 'api_key.txt')
+def refineResult(type_, results):    
+    REQUIRE_KEYS = ['name', 'type', 'price_level', 'rating', 'user_ratings_total', 'geometry', 'place_id', 'plus_code', 'vicinity']
 
-    with open(file_path, 'r') as file:
-        return file.read()
+    #filter out not operating places
+    # results = [result for result in results if result['business_status'] == 'OPERATIONAL']
 
-#fixme: need to change the request format as getPlaces function
-def getRoutes(API, origin, destination):
+    #filter out the rating smaller than 3
     
-    headers = {
-        'Content-Type': 'application/json',
-        'X-Goog-Api-Key': API,
-        'X-Goog-FieldMask': 'routes.legs.steps.transitDetails'
-    }
+    results = [result for result in results if float(result['rating']) >= 3.0]
+    
+    results = list(map(lambda result: {**result, 'type': type_}, results))
 
-    data = {
-        "origin": {
-            "address": origin
-        },
-        "destination": {
-            "address": destination
-        },
-        "travelMode": "TRANSIT",
-        "computeAlternativeRoutes": True,
-        "transitPreferences": {
-            "routingPreference": "LESS_WALKING",
-            "allowedTravelModes": ["TRAIN"]
-        }
-    }
-
-    response = requests.post('https://routes.googleapis.com/directions/v2:computeRoutes', headers=headers, data=json.dumps(data))
-    return response
+    #remove unnecessary key value
+    return list(map(lambda result: {key: value for key, value in result.items() if key in REQUIRE_KEYS}, results))
 
 
-def getPlaces(API, template, location, distance, budget):
+def calculateDistance(location1, location2):
+    lat1_rad = math.radians(location1['lat'])
+    lon1_rad = math.radians(location1['lng'])
+    lat2_rad = math.radians(location2['lat'])
+    lon2_rad = math.radians(location2['lng'])
 
-    activities = []
+    dlon = lon2_rad - lon1_rad
+    dlat = lat2_rad - lat1_rad
+    a = math.sin(dlat/2)**2 + math.cos(lat1_rad) * math.cos(lat2_rad) * math.sin(dlon/2)**2
+    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1-a))
+    distance = 6371 * c
 
+    return distance * 1000
+
+
+def getActivities(template, location, distance, budget):
     if template == "solo":
         random.shuffle(SOLO_TYPES)
         types = SOLO_TYPES[0:3]
@@ -194,87 +192,104 @@ def getPlaces(API, template, location, distance, budget):
         random.shuffle(FRIENDS_TYPES)
         types = FRIENDS_TYPES[0:3]
 
-    print(types)
+    activites = []
 
-    for i in types:
-        params = {
-            "location": location,
-            "radius": distance,
-            "maxprice": budget,
-            "type": i,
-            "key": API
-        }
+    for type_ in types:
+        activites += refineResult(type_, googleMapsApi.getPlaces(type_, location, distance, budget))
 
-        response = requests.get(NEARBYSEARCH_URL, params=params)
+    return activites
 
-        if response.status_code == 200:
-            activities+=response.json().get("results", [])
+
+def getRestaurants(location, distance, budget):
+    activites = googleMapsApi.getPlaces('restaurant', location, distance, budget)
+
+    return refineResult('restaurant', activites)
+
+
+#========================================================================place selector functions
+
+
+def getClosestPlace(location, places):
+    pass
+
+def getQualitativePlace(location, places):
+    pass
+
+def getRandomPlace(location, places):
+    pass
+
+
+#========================================================================generative algorithm
+
+
+def generateRoute(startTime, endTime, location, activities, nextPlaceSelector, restaurants=None):
+    
+    lastMealTime = None
+    currentLocation = location
+    currentTime = startTime
+    route = []
+    
+    while currentTime < endTime:
+        if (restaurants != None) and (4 <= currentTime - lastMealTime):
+            if 0 != len(list(filter(lambda mealTime: mealTime['startTime'] < currentTime < mealTime['endTime'], MEAL_TIMES))):
+                #select next place
+                nextPlace = nextPlaceSelector(currentLocation, restaurants)
+                
+                #remove the selected place
+                restaurants = [restaurant for restaurant in restaurants if nextPlace['place_id'] != restaurant['place_id']]
+                
+                #calculate time
+                currentTime += TYPES[nextPlace['type']]["duration"]
+                lastMealTime = currentTime
+                
+
         else:
-            print(f"Error {response.status_code}: {response.text}")
+            #select next place
+            nextPlace = nextPlaceSelector(currentLocation, activities)
+            
+            #remove the selected place
+            activities = [activity for activity in activities if nextPlace['place_id'] != activity['place_id']]
+            
+            #calcualte time
+            currentTime += TYPES[nextPlace['type']]["duration"]
         
-    params = {
-        "location": location,
-        "radius": distance,
-        "maxprice": budget,
-        "type": 'restaurant',
-        "key": API
-    }
+        #update new place to the route
+        route.append(nextPlace)
 
-    response = requests.get(NEARBYSEARCH_URL, params=params)
-
-    if response.status_code == 200:
-        restaurantes=response.json().get("results", [])
-    else:
-        print(f"Error {response.status_code}: {response.text}")
-
-    return {"restaurantes": restaurantes, "activities": activities}
+        #update current location
+        currentLocation = nextPlace['geometry']['location']
 
 
-def getShortestRoute():
+#generate initial population with route selectors
+def generateFirstPopulation(populationNumber):
     pass
 
-
-def getQualitativeRoute():
+#O(log(n)/2) removing the worst route untill 50% left
+def removeBadPopulation(population):
     pass
 
-
-def getNoMealRoute():
+#make the population double with some mutation
+def generateNextPopulation(population, mutationRate):
     pass
 
-
-def getLocalSpecialtyRoute():
-    pass
-
-
-def getAllRoutes(location, distance, time, duration, transportation, budget, template):
-    API = getApi()
-
-    LOCATION = location
-    DISTANCE = distance #maximum 5000(m)
-    TIME = time
-    DURATION = duration
-    TRANSPORTATION = transportation
-    BUDGET = budget #between 0(free) ~ 4(Expensive)
-    TEMPLATE = template
-
-    return{
-        "shortest": getShortestRoute(),
-        "qualitative": getQualitativeRoute(),
-        "noMeal": getNoMealRoute(),
-        "localSpecialty": getLocalSpecialtyRoute(),
-    }
+def runPopulation(intialPopulationNumber, generationNumber, mutationRate):
+    
+    population = generateFirstPopulation(intialPopulationNumber)
+    for _ in generationNumber:
+        population = generateNextPopulation(population, mutationRate)
+        population = removeBadPopulation(population)
+    
+    return population
 
 
 
-location = '-33.870396, 151.207030'
+
+
+location = '-33.917663, 151.232869'
 distance = '1000'
 time = ''
 duration = ''
 transportation = ''
-budget = '4'
+budget = '2'
 template = 'solo'
-
-
-# print(getPlaces(getApi(), template, location, distance, budget))
-
-# print(getAllRoutes(location, distance, time, duration, transportation, budget, template))
+print(getActivities(template, location, distance, budget))

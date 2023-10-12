@@ -40,7 +40,7 @@ def getRoutes(origin, destination):
 def getPlaces(type_, location, distance, budget):
 
     params = {
-        "location": location,
+        "location": str(location['lat'])+', '+str(location['lng']),
         "radius": distance,
         "maxprice": budget,
         "type": type_,

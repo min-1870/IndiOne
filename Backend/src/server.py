@@ -1,4 +1,5 @@
 from flask import Flask, request
+from route import generateRoutes
 app = Flask("IndiOneApi")
 
 @app.route('/', methods=['GET'])
@@ -18,7 +19,7 @@ def header_info():
         return {"error": "Missing property"}, 400
 
     
-    return userInput, 200
+    return generateRoutes(userInput), 200
 
 
 if __name__ == '__main__':

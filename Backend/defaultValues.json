@@ -1,0 +1,141 @@
+{
+    "place":{
+        "types":{
+            "amusement_park": {
+                "duration": 5,
+                "time": "day"
+            },
+            "aquarium": {
+                "duration": 2.5,
+                "time": "day"
+            },
+            "art_gallery": {
+                "duration": 1.5,
+                "time": "day"
+            },
+            "bakery": {
+                "duration": 0.75,
+                "time": "day"
+            },
+            "bar": {
+                "duration": 2.5,
+                "time": "night"
+            },
+            "bowling_alley": {
+                "duration": 1.5,
+                "time": "day"
+            },
+            "cafe": {
+                "duration": 1.5,
+                "time": "any"
+            },
+            "casino": {
+                "duration": 2.5,
+                "time": "night"
+            },
+            "museum": {
+                "duration": 3,
+                "time": "day"
+            },
+            "night_club": {
+                "duration": 4,
+                "time": "night"
+            },
+            "park": {
+                "duration": 1.5,
+                "time": "day"
+            },
+            "shopping_mall": {
+                "duration": 3,
+                "time": "day"
+            },
+            "zoo": {
+                "duration": 4,
+                "time": "day"
+            },
+            "tourist_attraction": {
+                "duration": 2.5,
+                "time": "day"
+            },
+            "restaurant": {
+                "duration": 1.5,
+                "time": "any"
+            }
+        },
+        "templates":{
+            "solo":[
+                "art_gallery",
+                "bakery",
+                "bowling_alley",
+                "cafe",
+                "museum",
+                "park",
+                "shopping_mall",
+                "zoo",
+                "tourist_attraction"
+            ],
+            "couple":[
+                "amusement_park",
+                "aquarium",
+                "art_gallery",
+                "bar",
+                "bakery",
+                "museum",
+                "park",
+                "shopping_mall",
+                "zoo",
+                "tourist_attraction"
+            ],
+            "family":[
+                "amusement_park",
+                "aquarium",
+                "art_gallery",
+                "bakery",
+                "cafe",
+                "museum",
+                "park",
+                "shopping_mall",
+                "zoo",
+                "tourist_attraction"
+            ],
+            "friends":[
+                "amusement_park",
+                "aquarium",
+                "art_gallery",
+                "bar",
+                "bowling_alley",
+                "cafe",
+                "casino",
+                "museum",
+                "night_club",
+                "park",
+                "shopping_mall",
+                "zoo",
+                "tourist_attraction"
+            ]
+        }
+    },
+    "time":{
+        "night": 18,
+        "mealInterval": 4,
+        "speed":{
+            "walking":0.0002,
+            "public":0.000075,
+            "private":0.00005
+        },
+        "maximum":{
+            "walking":833, 
+            "public":2222, 
+            "private":5000 
+        },
+        "meal": [
+            {"startTime":6, "endTime": 9},
+            {"startTime":11, "endTime": 14},
+            {"startTime":18, "endTime": 21}
+        ]
+    },
+    "algorithm":{
+        "mutation": 200,
+        "duplicateTypesWeight": 2
+    }   
+}

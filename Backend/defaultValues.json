@@ -72,7 +72,8 @@
                 "park",
                 "shopping_mall",
                 "zoo",
-                "tourist_attraction"
+                "tourist_attraction",
+                "restaurant"
             ],
             "couple":[
                 "amusement_park",
@@ -84,7 +85,8 @@
                 "park",
                 "shopping_mall",
                 "zoo",
-                "tourist_attraction"
+                "tourist_attraction",
+                "restaurant"
             ],
             "family":[
                 "amusement_park",
@@ -96,7 +98,8 @@
                 "park",
                 "shopping_mall",
                 "zoo",
-                "tourist_attraction"
+                "tourist_attraction",
+                "restaurant"
             ],
             "friends":[
                 "amusement_park",
@@ -111,7 +114,8 @@
                 "park",
                 "shopping_mall",
                 "zoo",
-                "tourist_attraction"
+                "tourist_attraction",
+                "restaurant"
             ]
         }
     },

@@ -1,87 +1,82 @@
 import random
 import googleMapsApi
 import math
+import json
 import copy
-from datetime import datetime
-import read
+from datetime import datetime, timedelta
+import database
+from bson.objectid import ObjectId
+import time
 
 
-
-TYPES = read.DEFAULT_VALUES["place"]["types"]
-TEMPLATES = read.DEFAULT_VALUES["place"]["templates"]
-MEAL_TIMES = read.DEFAULT_VALUES["time"]["meal"]
-TRAVEL_TIMES = read.DEFAULT_VALUES["time"]["speed"] #(1m/h)
-MAXIMUM_DISTANCE = read.DEFAULT_VALUES["time"]["maximum"] #(m)
-NIGHT_TIME = read.DEFAULT_VALUES["time"]["night"]
-MEAL_INTERVAL_TIME = read.DEFAULT_VALUES["time"]["mealInterval"]
-MUTATION = read.DEFAULT_VALUES["algorithm"]["mutation"]
-DUPLICATE_TYPES_WEIGHT = read.DEFAULT_VALUES["algorithm"]["duplicateTypesWeight"]
-database = {}
+TYPES = database.DEFAULT_VALUES["place"]["types"]
+TEMPLATES = database.DEFAULT_VALUES["place"]["templates"]
+MEAL_TIMES = database.DEFAULT_VALUES["time"]["meal"]
+TRAVEL_TIMES = database.DEFAULT_VALUES["time"]["speed"] #(1m/h)
+MAXIMUM_DISTANCE = database.DEFAULT_VALUES["time"]["maximum"] #(m)
+NIGHT_TIME = database.DEFAULT_VALUES["time"]["night"]
+MEAL_INTERVAL_TIME = database.DEFAULT_VALUES["time"]["mealInterval"]
+MUTATION = database.DEFAULT_VALUES["algorithm"]["mutation"]
+DUPLICATE_TYPES_WEIGHT = database.DEFAULT_VALUES["algorithm"]["duplicateTypesWeight"]
 
 
 
 #========================================================================fetching functions
 
 
-def getActivities(userInput):
+def getPlaces(userInput):
     types = TEMPLATES[userInput['template']]
     # random.shuffle(types)
 
-    activites = []
+    places = {}
 
-    for type_ in types:#[0:int(len(types)/1.5)]
-        activites += refinePlaceResults(type_, userInput, googleMapsApi.getPlaces(type_, userInput['location'], userInput['distance'], userInput['budget']))
+     
+    for type_ in types:
+        results = googleMapsApi.getPlaces(type_, userInput['location'], userInput['distance'], userInput['budget'])
+        
+        for result in results:
+            refinedResult = refinePlaceResult(type_, userInput, result)
+
+            if refinedResult != False:
+                places[refinedResult["place_id"]] = refinedResult["place"]
     
-    return activites
+    if len(places.keys()) == 0:
+        print("getPlaces: No places were fetched from API")
+        return False
 
-
-def getRestaurants(userInput):
-    activites = googleMapsApi.getPlaces('restaurant', userInput['location'], userInput['distance'], userInput['budget'])
-
-    return refinePlaceResults('restaurant', userInput, activites)
-
+    return places
 
 
 
 #========================================================================utility functions
 
 
-def refinePlaceResults(type_, userInput, results):    
-    REQUIRE_KEYS = ['name', 'type', 'price_level', 'rating', 'user_ratings_total', 'place_id', 'geometry']
-    
-    # results = [result for result in results if result['business_status'] == 'OPERATIONAL']
+def refinePlaceResult(type_, userInput, result):    
+    REQUIRE_KEYS = ['name', 'type', 'price_level', 'rating', "place_id", 'user_ratings_total', 'geometry']
 
-    def validation(result):
-
-        #rating must be over 3.0
-        if 'rating' in result.keys():
-            if float(result['rating']) <= 3.0:
-                return False
-        else:
+    #rating must be over 3.0
+    if 'rating' in result.keys():
+        if float(result['rating']) <= 3.0:
             return False
-            
-        #filter out unrelated types
-        if 'travel_agency' in result['types']:
-            return False
-
-        #remove place based on budget
-        if 'price_level' in result.keys():
-            if int(userInput['budget']) < int(result['price_level']):
-                return False
+    else:
+        return False
         
-            
-        return True
+    #filter out unrelated types
+    if 'travel_agency' in result['types']:
+        return False
 
-    newResults = []
-    for result in results:
-        if validation(result):
-            newResults.append(result)                    
-    results = newResults
+    #remove place based on budget
+    if 'price_level' in result.keys():
+        if int(userInput['budget']) < int(result['price_level']):
+            return False
     
-    results = list(map(lambda result: {**result, 'type': type_}, results))
+    #insert the main type
+    result['type'] = type_
 
-    #remove unnecessary key value
-    return list(map(lambda result: {key: value for key, value in result.items() if key in REQUIRE_KEYS}, results))
+    #remove unnecessary KVs
+    result = {key: value for key, value in result.items() if key in REQUIRE_KEYS}
+
+    return {"place_id": result["place_id"], "place": result}
 
 
 def refineDetailResult(result):
@@ -157,12 +152,20 @@ def calculateDistance(location1, location2):
     return distance * 1000
 
 
+def converUserInputTypes(userInput):
+    userInput['location']['lat'] = float(userInput['location']['lat'])
+    userInput['location']['lng'] = float(userInput['location']['lng'])
+    userInput['distance'] = float(userInput['distance'])
+    userInput['time'] = int(userInput['time'])
+    userInput['duration'] = int(userInput['duration'])
+    userInput['budget'] = float(userInput['budget'])
+    return userInput
 
 
 #======================================================================== route funcitons
 
 
-def getNextPlace(userInput, route, currentTime, places):
+def getNextPlace(userInput, route, currentTime, places, requireTypes, avoidTypes):
     
     MAX = MAXIMUM_DISTANCE[userInput['transportation']]
     result = None
@@ -181,42 +184,66 @@ def getNextPlace(userInput, route, currentTime, places):
     }
     
     def validation(place, distance):
-        
-        if distance > MAX:
-            
+
+        #Check whether the type of the place is require type
+        if (not place['type'] in requireTypes) and 0 != len(requireTypes):
             return False
-            
+        
+        #Check whether the type of the place is avoiding type
+        if (place['type'] in avoidTypes) and 0 != len(avoidTypes):
+            return False
+        
+        #Check the opening time
+        if 'schedule' in place.keys():
+            if place['schedule'] != False:
+                schedule = place['schedule']
+                if not (place['startTime'] > schedule['startTime'] and place['endTime'] < schedule['endTime']):
+                    return False
+
+        #Check whether the place is already in the route
+        if place['place_id'] in [place['place_id'] for place in route if place['type'] != 'travel']: 
+            return False
+
+        #Check whether the place is far
+        if distance > MAX:            
+            return False
+
+        #Check whether the place is same type with the previous place
         if len(route) != 0:
-            if place['type'] == route[-1]['type']:
+            if place['type'] == route[-1]['type']:                
                 return False
 
-
+        #Check whether the place is for the right moment of the day
         if NIGHT_TIME < currentTime:
-            if TYPES[place['type']]['time'] == 'day':
+            if TYPES[place['type']]['time'] == 'day':                
                 return False
         else:
-            if TYPES[place['type']]['time'] == 'night':
+            if TYPES[place['type']]['time'] == 'night':                
                 return False
 
         return True
 
-    for place in places:
-        if len(route) == 0:
-            distance = calculateDistance(userInput['location'], place['geometry']['location'])
-        else:
-            distance = calculateDistance(route[-1]['geometry']['location'], place['geometry']['location'])
+    for key in places:
+
+        if key == '_id':
+            continue
         
-        if validation(place, distance):
+        if len(route) == 0:
+            distance = calculateDistance(userInput['location'], places[key]['geometry']['location'])
+        else:
+            distance = calculateDistance(route[-1]['geometry']['location'], places[key]['geometry']['location'])
+        
+        if validation(places[key], distance):
 
             #Calcualte Score
 
             distanceScore = 100-distance/MAX*100
             
-            ratingScore = float(place['rating'])/5*100
+            ratingScore = float(places[key]['rating'])/5*100
             
-            user_ratings_totalScore = min(100, int(place['user_ratings_total']))
+            user_ratings_totalScore = min(100, int(places[key]['user_ratings_total']))
             
-            typesScore = max(1, DUPLICATE_TYPES_WEIGHT*[place['type'] for place in route if place['type'] != 'restaurants'].count(place['type']))
+            typesScore = max(1, DUPLICATE_TYPES_WEIGHT*[place['type'] for place in route if place['type'] != 'restaurants'].count(places[key]['type']))
             
             randomScore = random.randint(-1*MUTATION,MUTATION)
 
@@ -229,7 +256,7 @@ def getNextPlace(userInput, route, currentTime, places):
                     'rating': ratingScore,
                     'user_ratings_total': user_ratings_totalScore,
                 }
-                result = place
+                result = places[key]
 
     if result == None : 
         print("getNextPlace: Cannot find any suitable next place.")
@@ -250,14 +277,18 @@ def getNextPlace(userInput, route, currentTime, places):
     return {'travel':travel, 'place':result, 'score': score}
 
 
-def generateRoute(userInput, places):
+def generateRoute(userInput, places, oldRoute=[]):
     
+    route = copy.deepcopy(oldRoute)
     lastMealTime = 0
-    activities = places['activities']
-    restaurants = places['restaurants']
     currentTime = userInput['time']
     endTime = userInput['time'] + userInput['duration']
-    route = []
+    
+    if len(route) != 0:
+        #update last meal time
+        for place in route:
+            if place['type'] == 'restaurant':
+                lastMealTime = place['endTime']
     
     score = {
         'total': [],
@@ -267,7 +298,7 @@ def generateRoute(userInput, places):
     }
 
     def checkMealTime():
-        if (restaurants != None) and (MEAL_INTERVAL_TIME <= currentTime - lastMealTime):
+        if MEAL_INTERVAL_TIME <= currentTime - lastMealTime:
             if 0 != len(list(filter(lambda mealTime: mealTime['startTime'] < currentTime < mealTime['endTime'], MEAL_TIMES))):
                 return True
         return False
@@ -275,32 +306,23 @@ def generateRoute(userInput, places):
     while currentTime < endTime:
         if checkMealTime():
             #select next place
-            nextPlace = getNextPlace(userInput, route, currentTime, restaurants)
+            nextPlace = getNextPlace(userInput, route, currentTime, places, ["restaurant"], [])
             if nextPlace == False:
                 print('generateRoute: No place was fetched.')
                 return False
-            
-            #place
-            place = nextPlace['place']
-                
-            #remove the selected place
-            restaurants = [restaurant for restaurant in restaurants if place['place_id'] != restaurant['place_id']]
                 
             #calculate meal time
-            lastMealTime = place['endTime']               
+            lastMealTime = nextPlace['place']['endTime']               
 
         else:
             #select next place
-            nextPlace = getNextPlace(userInput, route, currentTime, activities)
+            nextPlace = getNextPlace(userInput, route, currentTime, places, [], ["restaurant"])
             if nextPlace == False:
                 print('generateRoute: No place was fetched.')
                 return False
 
-            #place
-            place = nextPlace['place']
-            
-            #remove the selected place
-            activities = [activity for activity in activities if place['place_id'] != activity['place_id']]
+        #place
+        place = nextPlace['place']
 
         #Insert travel
         travel = nextPlace['travel']
@@ -322,11 +344,7 @@ def generateRoute(userInput, places):
     typeBonus = len(set([place['type'] for place in route]))/20 * 100
     for key in score.keys():
         score[key] = sum(score[key]) / len(score[key]) + typeBonus
-
-    
     return {'score': score, 'route': route}
-    # return {'route':route, 'unselectedPlaces':{'activities':activities, 'restaurants':restaurants} }
-
 
 
 
@@ -371,13 +389,13 @@ def categorizeRoutes(routes):
     return categorizedRoutes
 
 
-def feasibilityRoute(route):
+def feasibilityRoute(route, places):
     
     
     for place in route:
         if place['type'] != 'travel':
-            if place['place_id'] in database:
-                schedule = database[place['place_id']]
+            if "schedule" in places[place['place_id']]:
+                schedule = places[place['place_id']]['schedule']
                 if schedule != False:
                     if not (place['startTime'] > schedule['startTime'] and place['endTime'] < schedule['endTime']):
                         
@@ -386,74 +404,150 @@ def feasibilityRoute(route):
                 schedule = refineDetailResult(googleMapsApi.getPlaceDetails(place['place_id']))
                 
                 if schedule != False:
-                    database[place['place_id']] = copy.deepcopy(schedule)
+                    places[place['place_id']]['schedule'] = copy.deepcopy(schedule)
                     if not (place['startTime'] > schedule['startTime'] and place['endTime'] < schedule['endTime']):
                         
                         return False
                 else:
-                    database[place['place_id']] = False
+                    places[place['place_id']]['schedule'] = False
     return True
 
 
 def generateRoutes(userInput):
-    userInput['location']['lat'] = float(userInput['location']['lat'])
-    userInput['location']['lng'] = float(userInput['location']['lng'])
-    userInput['distance'] = float(userInput['distance'])
-    userInput['time'] = int(userInput['time'])
-    userInput['duration'] = int(userInput['duration'])
-    userInput['budget'] = float(userInput['budget'])
+    #Convert type of input
+    converUserInputTypes(userInput)
     
+    #Fetch places
+    places = getPlaces(userInput)
+    if places == False:
+        print("generateRoutes: No places were fetched from getPlaces.")
+        return False
 
-    places = {
-        'activities': None,
-        'restaurants': None
-    }
-
-    # def checkIncludeMeal():
-    #     for time in range(userInput['time'], userInput['time']+userInput['duration']):
-    #         for timeRange in MEAL_TIMES:
-    #             if timeRange['startTime'] < time < timeRange['endTime']:
-    #                 return True
-    #     return False
-    
-    places['activities'] = getActivities(userInput)
-
-    # if checkIncludeMeal():
-    places['restaurants'] = getRestaurants(userInput)      
-
-    
-
+    #Generate 1000 routes
     routes = []
-    for i in range(1000):
+    for i in range(500):
+        
         newCase = generateRoute(userInput, places)
         if newCase != False: routes.append(newCase)
-    
+
+    if len(routes) == 0:
+        print('generateRoutes: Failed to generate any route.')
+        return False
+
+    #Sort the routes based on each theme   
     categorizedRoutes = categorizeRoutes(routes)
 
+    #Check the feasibility of the routes
     passedCategories = []
     for i in range(len(routes)):
         if i % 10 == 0: print(i)
         for key in categorizedRoutes:
             if not key in passedCategories:
-                if feasibilityRoute(categorizedRoutes[key][i]['route']):
+                if feasibilityRoute(categorizedRoutes[key][i]['route'], places):
                     categorizedRoutes[key] = categorizedRoutes[key][i]['route']
                     passedCategories.append(key)
                     print('success '+key)
         if len(passedCategories) == len(categorizedRoutes.keys()):
             break
+    
+    if len(passedCategories) != len(categorizedRoutes.keys()):
+        return False
 
-    # for key in categorizedRoutes.keys():
-    #     print(key)
-    #     for route in categorizedRoutes[key]:
-    #         c += 1
-    #         if c%10 == 0: print(c)
-    #         if feasibilityRoute(route['route']):
-    #             categorizedRoutes[key] = route['route']
-    #             break
-    print('---------------------------------')
-    print(len(database))
-    return categorizedRoutes
+    #Save the places into db
+    id_ = database.PLACES_COLLECTION.insert_one(places).inserted_id
 
+    return {"categorizedRoutes": categorizedRoutes, "id": id_}
+
+
+def regenerateRoutes(userInput, route, id_):
+    converUserInputTypes(userInput)
+    
+    #update the startTime and duration
+    timeZone = googleMapsApi.getTimeZone(userInput["location"])
+    currentUtcTime = datetime.utcnow()
+    secondsToAdd = timeZone['dstOffset'] + timeZone['rawOffset']  
+    timeDelta = timedelta(seconds=secondsToAdd)
+    currentLocalTime = currentUtcTime + timeDelta
+    hours, minute = map(int, currentLocalTime.strftime('%H:%M').split(':'))
+    
+    oldTime = userInput['time']
+    currentTime = hours + minute/60
+
+    #testing
+    # oldTime = userInput['time']
+    # currentTime = 17
+
+    if currentTime > oldTime + userInput['duration'] or currentTime < oldTime:
+        return False
+    
+    userInput['time'] = currentTime
+    userInput['duration'] = userInput['duration'] - (currentTime - oldTime)
+
+    #upate location as last place
+    newRoute = []
+    for i in range(len(route)):
+        place = route[i]
+        if place['startTime'] < currentTime and place['endTime'] > currentTime:
+            newRoute.append(place)
+            if i == 0:
+                newRoute = []
+                break
+            elif place['type'] == "travel":
+                route = route[:i]
+                userInput["location"] = route[-1]['geometry']['location']
+                route[-1]['endTime'] = currentTime
+                route[-1]['timeSpent'] = route[-1]['endTime'] - route[-1]['startTime']
+                break
+            else:
+                if i == len(route):
+                    return False
+                route = route[:i+1]
+                userInput["location"] = place['geometry']['location']
+                place['endTime'] = currentTime
+                place['timeSpent'] = place['endTime'] - place['startTime']
+                break
+
+    #Load places from DB
+    places = database.PLACES_COLLECTION.find_one({"_id": ObjectId(id_)})
+    
+
+    #generate 1000 new route for rest of the route
+    routes = []
+    for _ in range(500):
+        newRoute = generateRoute(userInput, places, route)
+        if newRoute != False:
+            routes.append(newRoute)
+    
+    #sort the routes
+    categorizedRoutes = categorizeRoutes(routes)
+
+    #Check the feasibility of the routes
+    passedCategories = []
+    for i in range(len(routes)):
+        if i % 10 == 0: print(i)
+        for key in categorizedRoutes:
+            
+            if key in passedCategories:
+                continue
+
+            if i >= len(categorizedRoutes[key]):
+                continue
+
+            if feasibilityRoute(categorizedRoutes[key][i]['route'], places):
+                categorizedRoutes[key] = categorizedRoutes[key][i]['route']
+                passedCategories.append(key)
+                print('success '+key)
+        if len(passedCategories) == len(categorizedRoutes.keys()):
+            break   
+    
+    if len(passedCategories) != len(categorizedRoutes.keys()):
+        return False
+    
+    #Update db
+    database.PLACES_COLLECTION.replace_one({"_id": ObjectId(id_)}, places)    
+
+    #return new route
+    return {"categorizedRoutes": categorizedRoutes, "id": id_}
 
 
 qvb = {'lat':'-33.871506', 'lng':'151.206982'}
@@ -463,7 +557,7 @@ userInput = {
     'location': sydney,
     'distance': "1000",
     'time': "12",
-    'duration': "8",
+    'duration': "10",
     'transportation': 'public',
     'budget': "2",
     'template':'friends',
@@ -471,14 +565,50 @@ userInput = {
 
 
 
-categorizedRoute = generateRoutes(userInput)
-for key in categorizedRoute.keys():
-        print("\n------------------------------------------"+key+"\n")
-        for place in categorizedRoute[key]:
-            if len(place) != 0:
-                if place['type'] == 'travel':
-                    print("     ->      Leave at "+str(place['startTime']))
-                    
-                    print("     <-      Arrive at "+str(place['endTime']))
-                else:
-                    print(place['type'], place['rating'], place['place_id'], ' - ', place['name'])
+# categorizedRoutes = generateRoutes(userInput)
+
+# if categorizedRoutes != False:
+
+
+#     with open("sample_route.json", "w") as json_file:
+#         json.dump(categorizedRoutes['categorizedRoutes']['casual'], json_file)
+#     print(categorizedRoutes['id'])
+
+#     for key in categorizedRoutes['categorizedRoutes'].keys():
+#             print("\n------------------------------------------"+key+"\n")
+#             for place in categorizedRoutes['categorizedRoutes'][key]:
+#                 if len(place) != 0:
+#                     if place['type'] == 'travel':
+#                         print("     ->      Leave at "+str(place['startTime']))
+                        
+#                         print("     <-      Arrive at "+str(place['endTime']))
+#                     else:
+#                         print(place['type'], place['rating'], place['place_id'], ' - ', place['name'])
+# else:
+#     print('nothing to return')
+
+#652d3f6c6049fe789974d5b6
+with open(database.directory('sample_route.json'), 'r') as f:
+    route = json.load(f)
+
+categorizedRoutes = regenerateRoutes(userInput, route, "652d3f6c6049fe789974d5b6")
+
+if categorizedRoutes != False:
+
+
+    with open("sample_route.json", "w") as json_file:
+        json.dump(categorizedRoutes['categorizedRoutes']['casual'], json_file)
+    print(categorizedRoutes['id'])
+
+    for key in categorizedRoutes['categorizedRoutes'].keys():
+            print("\n------------------------------------------"+key+"\n")
+            for place in categorizedRoutes['categorizedRoutes'][key]:
+                if len(place) != 0:
+                    if place['type'] == 'travel':
+                        print("     ->      Leave at "+str(place['startTime']))
+                        
+                        print("     <-      Arrive at "+str(place['endTime']))
+                    else:
+                        print(place['type'], place['rating'], place['place_id'], ' - ', place['name'])
+else:
+    print('nothing to return')

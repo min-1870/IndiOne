@@ -1,5 +1,5 @@
 #Ignore rules for backend:
 Backend/BackendVenv
-Backend/api_key.txt
+Backend/keys.json
 
 #Ignore rules for frontend:

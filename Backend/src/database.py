@@ -7,9 +7,10 @@ def directory(fileName):
 
 
 
-with open(directory('api_key.txt'), 'r') as file:
-    API_KEY = file.read()
-    print(API_KEY)
+with open(directory('keys.json'), 'r') as f:
+    KEYS = json.load(f)
+    print(KEYS)
+
 
 
 with open(directory('defaultValues.json'), 'r') as f:
@@ -17,7 +18,7 @@ with open(directory('defaultValues.json'), 'r') as f:
     print(DEFAULT_VALUES)
     
 
-uri = ""
+uri = KEYS['databaseUrl']
 
 # Create a new client and connect to the server
 client = MongoClient(uri)

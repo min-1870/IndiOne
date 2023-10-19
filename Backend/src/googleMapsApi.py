@@ -8,7 +8,7 @@ import time
 NEARBYSEARCH_URL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json"
 PLACE_DETAILS_URL = 'https://maps.googleapis.com/maps/api/place/details/json'
 TIME_ZONE_URL = "https://maps.googleapis.com/maps/api/timezone/json"
-API_KEY = database.API_KEY
+API_KEY = database.KEYS['googleApi']
 
 
 def getPlaceDetails(placeId):

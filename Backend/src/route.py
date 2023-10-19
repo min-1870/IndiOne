@@ -6,7 +6,7 @@ import copy
 from datetime import datetime, timedelta
 import database
 from bson.objectid import ObjectId
-import time
+
 
 
 TYPES = database.DEFAULT_VALUES["place"]["types"]
@@ -159,6 +159,10 @@ def converUserInputTypes(userInput):
     userInput['time'] = int(userInput['time'])
     userInput['duration'] = int(userInput['duration'])
     userInput['budget'] = float(userInput['budget'])
+
+    if "desireTime" in userInput.keys():
+        userInput['desireTime'] = float(userInput['desireTime'])
+
     return userInput
 
 
@@ -423,15 +427,14 @@ def generateRoutes(userInput):
         print("generateRoutes: No places were fetched from getPlaces.")
         return False
 
-    #Generate 1000 routes
+    #Generate 500 routes
     routes = []
     for i in range(500):
-        
         newCase = generateRoute(userInput, places)
         if newCase != False: routes.append(newCase)
 
     if len(routes) == 0:
-        print('generateRoutes: Failed to generate any route.')
+        print('generateRoutes: Fail to generate any route.')
         return False
 
     #Sort the routes based on each theme   
@@ -454,64 +457,79 @@ def generateRoutes(userInput):
         return False
 
     #Save the places into db
-    id_ = database.PLACES_COLLECTION.insert_one(places).inserted_id
+    try:
+        id_ = database.PLACES_COLLECTION.insert_one(places).inserted_id
+    except:
+        print("generateRoutes: Fail to save place into database.")
+        id_ = 'none'
 
-    return {"categorizedRoutes": categorizedRoutes, "id": id_}
+    return {"categorizedRoutes": categorizedRoutes, "id": str(id_)}
 
 
-def regenerateRoutes(userInput, route, id_):
+def regenerateRoutes(userInput):
+    #Convert type of input
     converUserInputTypes(userInput)
-    
-    #update the startTime and duration
-    timeZone = googleMapsApi.getTimeZone(userInput["location"])
-    currentUtcTime = datetime.utcnow()
-    secondsToAdd = timeZone['dstOffset'] + timeZone['rawOffset']  
-    timeDelta = timedelta(seconds=secondsToAdd)
-    currentLocalTime = currentUtcTime + timeDelta
-    hours, minute = map(int, currentLocalTime.strftime('%H:%M').split(':'))
-    
-    oldTime = userInput['time']
-    currentTime = hours + minute/60
+    route = userInput['route']
 
+    #update the startTime and duration
     #testing
     # oldTime = userInput['time']
     # currentTime = 17
+    if 'desireTime' in userInput.keys():
+        userInput['duration'] = userInput['duration'] - (userInput['desireTime'] - userInput['time'])
+        userInput['time'] = userInput['desireTime']
+        currentTime = userInput['time']
 
-    if currentTime > oldTime + userInput['duration'] or currentTime < oldTime:
-        return False
-    
-    userInput['time'] = currentTime
-    userInput['duration'] = userInput['duration'] - (currentTime - oldTime)
+    else:
+        timeZone = googleMapsApi.getTimeZone(userInput["location"])
+        currentUtcTime = datetime.utcnow()
+        secondsToAdd = timeZone['dstOffset'] + timeZone['rawOffset']  
+        timeDelta = timedelta(seconds=secondsToAdd)
+        currentLocalTime = currentUtcTime + timeDelta
+        hours, minute = map(int, currentLocalTime.strftime('%H:%M').split(':'))
+        
+        oldTime = userInput['time']
+        currentTime = hours + minute/60
+
+        if currentTime > oldTime + userInput['duration'] or currentTime < oldTime:
+            return False
+        
+        userInput['time'] = currentTime
+        userInput['duration'] = userInput['duration'] - (currentTime - oldTime)
 
     #upate location as last place
-    newRoute = []
+    
     for i in range(len(route)):
         place = route[i]
         if place['startTime'] < currentTime and place['endTime'] > currentTime:
-            newRoute.append(place)
             if i == 0:
-                newRoute = []
-                break
+                print('regenrateRoutes: No need to update the route.')
+                return False
             elif place['type'] == "travel":
-                route = route[:i]
-                userInput["location"] = route[-1]['geometry']['location']
+                # userInput["location"] = route[-1]['geometry']['location']
                 route[-1]['endTime'] = currentTime
                 route[-1]['timeSpent'] = route[-1]['endTime'] - route[-1]['startTime']
+                route = route[:i]
                 break
             else:
                 if i == len(route):
+                    print('regenrateRoutes: The route is already finished.')
                     return False
-                route = route[:i+1]
-                userInput["location"] = place['geometry']['location']
+                # userInput["location"] = place['geometry']['location']
                 place['endTime'] = currentTime
                 place['timeSpent'] = place['endTime'] - place['startTime']
+                route = route[:i+1]
                 break
 
     #Load places from DB
-    places = database.PLACES_COLLECTION.find_one({"_id": ObjectId(id_)})
-    
+    try: 
+        places = database.PLACES_COLLECTION.find_one({"_id": ObjectId(userInput['id'])})
+    except:
+        print("generateRoutes: Fail to load places from database.")
+        places = getPlaces(userInput)
 
-    #generate 1000 new route for rest of the route
+
+    #generate 500 new route for rest of the route
     routes = []
     for _ in range(500):
         newRoute = generateRoute(userInput, places, route)
@@ -544,10 +562,13 @@ def regenerateRoutes(userInput, route, id_):
         return False
     
     #Update db
-    database.PLACES_COLLECTION.replace_one({"_id": ObjectId(id_)}, places)    
+    try:
+        database.PLACES_COLLECTION.replace_one({"_id": ObjectId(userInput['id'])}, places)
+    except:
+        print("generateRoutes: Fail to save place into database.")
 
     #return new route
-    return {"categorizedRoutes": categorizedRoutes, "id": id_}
+    return {"categorizedRoutes": categorizedRoutes, "id": userInput['id']}
 
 
 qvb = {'lat':'-33.871506', 'lng':'151.206982'}
@@ -588,27 +609,27 @@ userInput = {
 #     print('nothing to return')
 
 #652d3f6c6049fe789974d5b6
-with open(database.directory('sample_route.json'), 'r') as f:
-    route = json.load(f)
+# with open(database.directory('sample_route.json'), 'r') as f:
+#     userInput = json.load(f)
 
-categorizedRoutes = regenerateRoutes(userInput, route, "652d3f6c6049fe789974d5b6")
+# categorizedRoutes = regenerateRoutes(userInput)
 
-if categorizedRoutes != False:
+# if categorizedRoutes != False:
 
 
-    with open("sample_route.json", "w") as json_file:
-        json.dump(categorizedRoutes['categorizedRoutes']['casual'], json_file)
-    print(categorizedRoutes['id'])
+#     with open("sample_route.json", "w") as json_file:
+#         json.dump(categorizedRoutes['categorizedRoutes']['casual'], json_file)
+#     print(categorizedRoutes['id'])
 
-    for key in categorizedRoutes['categorizedRoutes'].keys():
-            print("\n------------------------------------------"+key+"\n")
-            for place in categorizedRoutes['categorizedRoutes'][key]:
-                if len(place) != 0:
-                    if place['type'] == 'travel':
-                        print("     ->      Leave at "+str(place['startTime']))
+#     for key in categorizedRoutes['categorizedRoutes'].keys():
+#             print("\n------------------------------------------"+key+"\n")
+#             for place in categorizedRoutes['categorizedRoutes'][key]:
+#                 if len(place) != 0:
+#                     if place['type'] == 'travel':
+#                         print("     ->      Leave at "+str(place['startTime']))
                         
-                        print("     <-      Arrive at "+str(place['endTime']))
-                    else:
-                        print(place['type'], place['rating'], place['place_id'], ' - ', place['name'])
-else:
-    print('nothing to return')
+#                         print("     <-      Arrive at "+str(place['endTime']))
+#                     else:
+#                         print(place['type'], place['rating'], place['place_id'], ' - ', place['name'])
+# else:
+#     print('nothing to return')

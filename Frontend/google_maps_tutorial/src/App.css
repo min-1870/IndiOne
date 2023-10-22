@@ -1,6 +1,16 @@
-.box {
+
+#appMap {
     border: 1px solid #000;
     background: white;
     width: 393px;
     height: 365px;
-    }
+  }
+
+  .budget_range_container {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 20px 50px
+  }

@@ -1,0 +1,20 @@
+.guestContainer {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.guestContainer-btnContainer{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 20%;
+}
+
+#minus, #plus {
+    width: 20%
+}
+
+.guestContainer-title {
+    padding: 10px;
+}

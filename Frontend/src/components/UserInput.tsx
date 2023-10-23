@@ -182,6 +182,7 @@ const UserInput: React.FC = () => {
     );
     userLocation.lat = currentLat;
     userLocation.lng = currentLng;
+    userDataBackend();
     console.log(userInputInfo);
   }, [
     currentLat,
@@ -215,8 +216,6 @@ const UserInput: React.FC = () => {
       })
       .catch((error) => console.log(error.message));
   }
-
-  userDataBackend();
 
   return (
     <div>

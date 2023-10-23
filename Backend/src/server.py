@@ -1,6 +1,9 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 import route
 app = Flask("IndiOneApi")
+CORS(app)
+CORS(app, origins=["http://localhost:1234/"])
 
 @app.route('/route', methods=['POST'])
 def generateRoutes():
@@ -9,6 +12,8 @@ def generateRoutes():
         try:
             # Parse the JSON data from the request body
             userInput = request.get_json()
+            print(userInput)
+            print("aaaaaa")
 
             requireKeys = {'location', 'distance', 'time', 'duration', 'transportation', 'budget', 'template'}
 
@@ -18,7 +23,7 @@ def generateRoutes():
             if not 'lat' in userInput["location"].keys() or not 'lng' in userInput["location"].keys():
                 return {"error": "Missing location"}, 400    
 
-            print(userInput)
+            # print(userInput)
 
             return route.generateRoutes(userInput), 200
         except Exception as e:

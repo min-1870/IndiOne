@@ -3,3 +3,4 @@ Backend/BackendVenv
 Backend/keys.json
 
 #Ignore rules for frontend:
+.env

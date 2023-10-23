@@ -2,23 +2,17 @@ import "./DateForm.css";
 import { useState } from "react";
 
 const DateForm = () => {
-  const [currentDate, setCurrentDate] = useState("");
-  const [currentMonth, setCurrentMonth] = useState("");
-  const [currentYear, setCurrentYear] = useState("");
+  const [currentStartTime, setCurrentStartTime] = useState("");
+  const [currentEndTime, setCurrentEndTime] = useState("");
 
-  const handleDateChange = (event: any) => {
-    const selectDate = event.target.value;
-    setCurrentDate(selectDate);
+  const handleStartTime = (event: any) => {
+    const time = event.target.value;
+    setCurrentStartTime(time);
   };
 
-  const handleMonthChange = (event: any) => {
-    const selectMonth = event.target.value;
-    setCurrentMonth(selectMonth);
-  };
-
-  const handleYearChange = (event: any) => {
-    const selectYear = event.target.value;
-    setCurrentYear(selectYear);
+  const handleEndTime = (event: any) => {
+    const time = event.target.value;
+    setCurrentEndTime(time);
   };
 
   return (
@@ -31,47 +25,41 @@ const DateForm = () => {
           aria-expanded="false"
           id="eachButton"
         >
-          {!currentDate ? "Date" : currentDate}
+          {!currentStartTime ? "Start Time" : currentStartTime}
         </button>
         <ul className="dropdown-menu dropdown-menu-end">
           <select
             className="form-select"
             aria-label="Size 3 select example"
-            value={currentDate}
-            onChange={handleDateChange}
+            value={currentStartTime}
+            onChange={handleStartTime}
           >
-            <option>Date</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-            <option value="7">7</option>
-            <option value="8">8</option>
-            <option value="9">9</option>
-            <option value="10">10</option>
-            <option value="11">11</option>
-            <option value="12">12</option>
-            <option value="13">13</option>
-            <option value="14">14</option>
-            <option value="15">15</option>
-            <option value="16">16</option>
-            <option value="17">17</option>
-            <option value="18">18</option>
-            <option value="19">19</option>
-            <option value="20">20</option>
-            <option value="21">21</option>
-            <option value="22">22</option>
-            <option value="23">23</option>
-            <option value="24">24</option>
-            <option value="25">25</option>
-            <option value="26">26</option>
-            <option value="27">27</option>
-            <option value="28">28</option>
-            <option value="29">29</option>
-            <option value="30">30</option>
-            <option value="31">31</option>
+            <option>Time</option>
+            <option value="0">0 AM</option>
+            <option value="1">1 AM</option>
+            <option value="2">2 AM</option>
+            <option value="3">3 AM</option>
+            <option value="4">4 AM</option>
+            <option value="5">5 AM</option>
+            <option value="6">6 AM</option>
+            <option value="7">7 AM</option>
+            <option value="8">8 AM</option>
+            <option value="9">9 AM</option>
+            <option value="10">10 AM</option>
+            <option value="11">11 AM</option>
+            <option value="12">12 PM</option>
+            <option value="13">13 PM</option>
+            <option value="14">14 PM</option>
+            <option value="15">15 PM</option>
+            <option value="16">16 PM</option>
+            <option value="17">17 PM</option>
+            <option value="18">18 PM</option>
+            <option value="19">19 PM</option>
+            <option value="20">20 PM</option>
+            <option value="21">21 PM</option>
+            <option value="22">22 PM</option>
+            <option value="23">23 PM</option>
+            <option value="24">24 PM</option>
           </select>
         </ul>
       </div>
@@ -83,51 +71,41 @@ const DateForm = () => {
           aria-expanded="false"
           id="eachButton"
         >
-          {!currentMonth ? "Month" : currentMonth}
+          {!currentEndTime ? "End Time" : currentEndTime}
         </button>
         <ul className="dropdown-menu dropdown-menu-end">
           <select
             className="form-select"
             aria-label="Size 3 select example"
-            value={currentMonth}
-            onChange={handleMonthChange}
+            value={currentEndTime}
+            onChange={handleEndTime}
           >
-            <option>Month</option>
-            <option value="January">January</option>
-            <option value="February">February</option>
-            <option value="March">March</option>
-            <option value="April">April</option>
-            <option value="May">May</option>
-            <option value="June">June</option>
-            <option value="July">July</option>
-            <option value="August">August</option>
-            <option value="September">September</option>
-            <option value="October">October</option>
-            <option value="November">November</option>
-            <option value="December">December</option>
-          </select>
-        </ul>
-      </div>
-      <div className="btn-group">
-        <button
-          type="button"
-          className="btn btn-secondary dropdown-toggle"
-          data-bs-toggle="dropdown"
-          aria-expanded="false"
-          id="eachButton"
-        >
-          {!currentYear ? "Year" : currentYear}
-        </button>
-        <ul className="dropdown-menu dropdown-menu-end">
-          <select
-            className="form-select"
-            aria-label="Size 3 select example"
-            value={currentYear}
-            onChange={handleYearChange}
-          >
-            <option>Year</option>
-            <option value="2023">2023</option>
-            <option value="2024">2024</option>
+            <option>Time</option>
+            <option value="0">0 AM</option>
+            <option value="1">1 AM</option>
+            <option value="2">2 AM</option>
+            <option value="3">3 AM</option>
+            <option value="4">4 AM</option>
+            <option value="5">5 AM</option>
+            <option value="6">6 AM</option>
+            <option value="7">7 AM</option>
+            <option value="8">8 AM</option>
+            <option value="9">9 AM</option>
+            <option value="10">10 AM</option>
+            <option value="11">11 AM</option>
+            <option value="12">12 PM</option>
+            <option value="13">13 PM</option>
+            <option value="14">14 PM</option>
+            <option value="15">15 PM</option>
+            <option value="16">16 PM</option>
+            <option value="17">17 PM</option>
+            <option value="18">18 PM</option>
+            <option value="19">19 PM</option>
+            <option value="20">20 PM</option>
+            <option value="21">21 PM</option>
+            <option value="22">22 PM</option>
+            <option value="23">23 PM</option>
+            <option value="24">24 PM</option>
           </select>
         </ul>
       </div>

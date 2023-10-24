@@ -73,16 +73,23 @@
 .css-kglq79-MuiRating-root {
   display: flex;
   justify-content: space-evenly;
-  width: 100%;
+}
+
+#userBudget {
+  padding: 0 1% 0 1%
 }
 
 .MuiRating-icon {
-
-}
-#userBudget {
-  padding: 0 10% 0 10%
+  width: 100%;
 }
 
+.btn-group {
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  padding: 2%;
+}
 /* Transport */
 .transport-btn-container {
   display: flex;

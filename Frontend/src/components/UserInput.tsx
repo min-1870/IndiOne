@@ -219,20 +219,82 @@ const UserBudget: React.FC = () => {
     console.log(userInputInfo);
   }, [currentBudget]);
 
-  function handleBudget(value: number | null) {
+  function handleBudget(event: any) {
+    const value = event.target.value;
     if (value !== null) {
-      setCurrentBudget(String(value));
+      setCurrentBudget(String(Number(value) + 1));
     }
   }
 
   return (
-    <StyledRating
-      name="highlight-selected-only"
-      IconContainerComponent={IconContainer}
-      getLabelText={(value: number) => customIcons[value].label}
-      highlightSelectedOnly
-      onChange={(event, newValue) => handleBudget(newValue)}
-    />
+    <div
+      className="btn-group"
+      role="group"
+      aria-label="Basic radio toggle button group"
+    >
+      <input
+        type="radio"
+        className="btn-check"
+        name="btnradio"
+        id="btnradio0"
+        autoComplete="off"
+        onClick={handleBudget}
+        value="0"
+      ></input>
+      <label className="btn btn-outline-primary" htmlFor="btnradio0">
+        $
+      </label>
+      <input
+        type="radio"
+        className="btn-check"
+        name="btnradio"
+        id="btnradio1"
+        autoComplete="off"
+        onClick={handleBudget}
+        value="1"
+      ></input>
+      <label className="btn btn-outline-primary" htmlFor="btnradio1">
+        $$
+      </label>
+
+      <input
+        type="radio"
+        className="btn-check"
+        name="btnradio"
+        id="btnradio2"
+        autoComplete="off"
+        onClick={handleBudget}
+        value="2"
+      ></input>
+      <label className="btn btn-outline-primary" htmlFor="btnradio2">
+        $$$
+      </label>
+
+      <input
+        type="radio"
+        className="btn-check"
+        name="btnradio"
+        id="btnradio3"
+        autoComplete="off"
+        onClick={handleBudget}
+        value="3"
+      ></input>
+      <label className="btn btn-outline-primary" htmlFor="btnradio3">
+        $$$$
+      </label>
+      <input
+        type="radio"
+        className="btn-check"
+        name="btnradio"
+        id="btnradio4"
+        autoComplete="off"
+        onClick={handleBudget}
+        value="4"
+      ></input>
+      <label className="btn btn-outline-primary" htmlFor="btnradio4">
+        $$$$$
+      </label>
+    </div>
   );
 };
 

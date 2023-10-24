@@ -1,107 +1,453 @@
 // import "bootstrap/dist/css/bootstrap.css";
-// import React, { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
 // import "./UserInput.css";
 // import { Autocomplete } from "@react-google-maps/api";
+// import * as React from "react";
+// import { Global } from "@emotion/react";
+// import { styled } from "@mui/material/styles";
+// import CssBaseline from "@mui/material/CssBaseline";
+// import { grey } from "@mui/material/colors";
+// import Button from "@mui/material/Button";
+// import Box from "@mui/material/Box";
+// import Skeleton from "@mui/material/Skeleton";
+// import Typography from "@mui/material/Typography";
+// import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 
 // interface userData {
-//   location: string;
+//   location: location;
+//   distance: string;
+//   time: string;
+//   duration: string;
+//   transportation: string;
 //   budget: string;
+//   template: string;
 // }
 
 // interface location {
-//   lat: number;
-//   lng: number;
+//   lat: string;
+//   lng: string;
 // }
 
-// const UserInput: React.FC = () => {
-//   let userInputInfo: userData = { location: "null", budget: "null" };
-//   let userLocation: location = { lat: 0, lng: 0 };
+// const drawerBleeding = 56;
 
-//   const BudgetRange: React.FC = () => {
-//     const [currentBudget, setCurrentBudget] = useState("null");
+// interface Props {
+//   /**
+//    * Injected by the documentation to work in an iframe.
+//    * You won't need it on your project.
+//    */
+//   window?: () => Window;
+// }
 
-//     const changeBudget = (event: any) => {
-//       const budgetSelected = event.target.value;
-//       setCurrentBudget(budgetSelected);
-//     };
+// const Root = styled("div")(({ theme }) => ({
+//   height: "100%",
+//   backgroundColor:
+//     theme.palette.mode === "light"
+//       ? grey[100]
+//       : theme.palette.background.default,
+// }));
 
-//     useEffect(() => {
-//       userInputInfo["budget"] = currentBudget;
-//       console.log("budgetbudget");
-//       console.log(userInputInfo);
-//     }, [currentBudget]);
+// const StyledBox = styled(Box)(({ theme }) => ({
+//   backgroundColor: theme.palette.mode === "light" ? "#fff" : grey[800],
+// }));
 
-//     return (
-//       <div
-//         className="btn-group"
-//         role="group"
-//         aria-label="Basic radio toggle button group"
-//       >
-//         <input
-//           type="radio"
-//           className="btn-check"
-//           name="btnradio"
-//           id="btnradio0"
-//           autoComplete="off"
-//           onClick={changeBudget}
-//           value="0"
-//         ></input>
-//         <label className="btn btn-outline-primary" htmlFor="btnradio0">
-//           $
-//         </label>
-//         <input
-//           type="radio"
-//           className="btn-check"
-//           name="btnradio"
-//           id="btnradio1"
-//           autoComplete="off"
-//           onClick={changeBudget}
-//           value="1"
-//         ></input>
-//         <label className="btn btn-outline-primary" htmlFor="btnradio1">
-//           $$
-//         </label>
+// const Puller = styled(Box)(({ theme }) => ({
+//   width: 30,
+//   height: 6,
+//   backgroundColor: theme.palette.mode === "light" ? grey[300] : grey[900],
+//   borderRadius: 3,
+//   position: "absolute",
+//   top: 8,
+//   left: "calc(50% - 15px)",
+// }));
 
-//         <input
-//           type="radio"
-//           className="btn-check"
-//           name="btnradio"
-//           id="btnradio2"
-//           autoComplete="off"
-//           onClick={changeBudget}
-//           value="2"
-//         ></input>
-//         <label className="btn btn-outline-primary" htmlFor="btnradio2">
-//           $$$
-//         </label>
+// function SwipeableEdgeDrawer(props: Props) {
+//   const { window } = props;
+//   const [open, setOpen] = React.useState(false);
 
-//         <input
-//           type="radio"
-//           className="btn-check"
-//           name="btnradio"
-//           id="btnradio3"
-//           autoComplete="off"
-//           onClick={changeBudget}
-//           value="3"
-//         ></input>
-//         <label className="btn btn-outline-primary" htmlFor="btnradio3">
-//           $$$$
-//         </label>
-//         <input
-//           type="radio"
-//           className="btn-check"
-//           name="btnradio"
-//           id="btnradio4"
-//           autoComplete="off"
-//           onClick={changeBudget}
-//           value="4"
-//         ></input>
-//         <label className="btn btn-outline-primary" htmlFor="btnradio4">
-//           $$$$$
-//         </label>
-//       </div>
-//     );
+//   const toggleDrawer = (newOpen: boolean) => () => {
+//     setOpen(newOpen);
 //   };
+
+//   // This is used only for the example
+//   const container =
+//     window !== undefined ? () => window().document.body : undefined;
+
+//   return (
+//     <Root>
+//       <CssBaseline />
+//       <Global
+//         styles={{
+//           ".MuiDrawer-root > .MuiPaper-root": {
+//             height: `calc(50% - ${drawerBleeding}px)`,
+//             overflow: "visible",
+//           },
+//         }}
+//       />
+//       <Box sx={{ textAlign: "center", pt: 1 }}>
+//         <Button onClick={toggleDrawer(true)}>Open</Button>
+//       </Box>
+//       <SwipeableDrawer
+//         container={container}
+//         anchor="bottom"
+//         open={open}
+//         onClose={toggleDrawer(false)}
+//         onOpen={toggleDrawer(true)}
+//         swipeAreaWidth={drawerBleeding}
+//         disableSwipeToOpen={false}
+//         ModalProps={{
+//           keepMounted: false,
+//         }}
+//       >
+//         <StyledBox
+//           sx={{
+//             position: "absolute",
+//             top: -drawerBleeding,
+//             borderTopLeftRadius: 8,
+//             borderTopRightRadius: 8,
+//             visibility: "visible",
+//             right: 0,
+//             left: 0,
+//           }}
+//         >
+//           <Puller />
+//           <Typography sx={{ p: 2, color: "text.secondary" }}>
+//             Google Maps
+//           </Typography>
+//         </StyledBox>
+//         <StyledBox
+//           sx={{
+//             px: 2,
+//             pb: 2,
+//             height: "100%",
+//             overflow: "auto",
+//           }}
+//         ></StyledBox>
+//       </SwipeableDrawer>
+//     </Root>
+//   );
+// }
+
+// let userLocation: location = { lat: "", lng: "" };
+// let userInputInfo: userData = {
+//   location: userLocation,
+//   distance: "",
+//   time: "",
+//   duration: "",
+//   transportation: "",
+//   budget: "",
+//   template: "friends",
+// };
+
+// const UserBudget: React.FC = () => {
+//   const [currentBudget, setCurrentBudget] = useState("0");
+//   const changeBudget = (event: any) => {
+//     const budgetSelected = event.target.value;
+//     setCurrentBudget(budgetSelected);
+//   };
+
+//   useEffect(() => {
+//     console.log("uESEEFEFEFCT");
+//     userInputInfo["budget"] = currentBudget;
+//     console.log(userInputInfo);
+//   }, [currentBudget]);
+
+//   return (
+//     <div
+//       className="btn-group"
+//       role="group"
+//       aria-label="Basic radio toggle button group"
+//     >
+//       <input
+//         type="radio"
+//         className="btn-check"
+//         name="btnradio"
+//         id="btnradio0"
+//         autoComplete="off"
+//         onClick={changeBudget}
+//         value="0"
+//       ></input>
+//       <label className="btn btn-outline-primary" htmlFor="btnradio0">
+//         $
+//       </label>
+//       <input
+//         type="radio"
+//         className="btn-check"
+//         name="btnradio"
+//         id="btnradio1"
+//         autoComplete="off"
+//         onClick={changeBudget}
+//         value="1"
+//       ></input>
+//       <label className="btn btn-outline-primary" htmlFor="btnradio1">
+//         $$
+//       </label>
+
+//       <input
+//         type="radio"
+//         className="btn-check"
+//         name="btnradio"
+//         id="btnradio2"
+//         autoComplete="off"
+//         onClick={changeBudget}
+//         value="2"
+//       ></input>
+//       <label className="btn btn-outline-primary" htmlFor="btnradio2">
+//         $$$
+//       </label>
+
+//       <input
+//         type="radio"
+//         className="btn-check"
+//         name="btnradio"
+//         id="btnradio3"
+//         autoComplete="off"
+//         onClick={changeBudget}
+//         value="3"
+//       ></input>
+//       <label className="btn btn-outline-primary" htmlFor="btnradio3">
+//         $$$$
+//       </label>
+//       <input
+//         type="radio"
+//         className="btn-check"
+//         name="btnradio"
+//         id="btnradio4"
+//         autoComplete="off"
+//         onClick={changeBudget}
+//         value="4"
+//       ></input>
+//       <label className="btn btn-outline-primary" htmlFor="btnradio4">
+//         $$$$$
+//       </label>
+//     </div>
+//   );
+// };
+
+// const UserTime: React.FC = () => {
+//   // Start & End Time
+//   const [currentStartTime, setCurrentStartTime] = useState("");
+//   const [currentEndTime, setCurrentEndTime] = useState("");
+
+//   const handleStartTime = (event: any) => {
+//     const time = event.target.value;
+//     setCurrentStartTime(time);
+//   };
+
+//   const handleEndTime = (event: any) => {
+//     const time = event.target.value;
+//     setCurrentEndTime(time);
+//   };
+
+//   useEffect(() => {
+//     console.log("uESEEFEFEFCT");
+//     userInputInfo["time"] = currentStartTime;
+//     userInputInfo["duration"] = String(
+//       Number(currentEndTime) - Number(currentStartTime)
+//     );
+//     console.log(userInputInfo);
+//   }, [currentStartTime, currentEndTime]);
+
+//   return (
+//     <div className="dateContainer">
+//       <div className="btn-group">
+//         <button
+//           type="button"
+//           className="btn btn-secondary dropdown-toggle"
+//           data-bs-toggle="dropdown"
+//           aria-expanded="false"
+//           id="eachButton"
+//         >
+//           {!currentStartTime ? "Start Time" : currentStartTime + ":00"}
+//         </button>
+//         <ul className="dropdown-menu dropdown-menu-end">
+//           <select
+//             className="form-select"
+//             aria-label="Size 3 select example"
+//             value={currentStartTime}
+//             onChange={handleStartTime}
+//           >
+//             <option className="dropdown-item">Time</option>
+//             <option className="dropdown-item" value="0">
+//               0:00
+//             </option>
+//             <option className="dropdown-item" value="1">
+//               1:00
+//             </option>
+//             <option className="dropdown-item" value="2">
+//               2:00
+//             </option>
+//             <option className="dropdown-item" value="3">
+//               3:00
+//             </option>
+//             <option className="dropdown-item" value="4">
+//               4:00
+//             </option>
+//             <option className="dropdown-item" value="5">
+//               5:00
+//             </option>
+//             <option className="dropdown-item" value="6">
+//               6:00
+//             </option>
+//             <option className="dropdown-item" value="7">
+//               7:00
+//             </option>
+//             <option className="dropdown-item" value="8">
+//               8:00
+//             </option>
+//             <option className="dropdown-item" value="9">
+//               9:00
+//             </option>
+//             <option className="dropdown-item" value="10">
+//               10:00
+//             </option>
+//             <option className="dropdown-item" value="11">
+//               11:00
+//             </option>
+//             <option className="dropdown-item" value="12">
+//               12:00
+//             </option>
+//             <option className="dropdown-item" value="13">
+//               13:00
+//             </option>
+//             <option className="dropdown-item" value="14">
+//               14:00
+//             </option>
+//             <option className="dropdown-item" value="15">
+//               15:00
+//             </option>
+//             <option className="dropdown-item" value="16">
+//               16:00
+//             </option>
+//             <option className="dropdown-item" value="17">
+//               17:00
+//             </option>
+//             <option className="dropdown-item" value="18">
+//               18:00
+//             </option>
+//             <option className="dropdown-item" value="19">
+//               19:00
+//             </option>
+//             <option className="dropdown-item" value="20">
+//               20:00
+//             </option>
+//             <option className="dropdown-item" value="21">
+//               21:00
+//             </option>
+//             <option className="dropdown-item" value="22">
+//               22:00
+//             </option>
+//             <option className="dropdown-item" value="23">
+//               23:00
+//             </option>
+//             <option className="dropdown-item" value="24">
+//               24:00
+//             </option>
+//           </select>
+//         </ul>
+//       </div>
+//       <div className="btn-group">
+//         <button
+//           type="button"
+//           className="btn btn-secondary dropdown-toggle"
+//           data-bs-toggle="dropdown"
+//           aria-expanded="false"
+//           id="eachButton"
+//         >
+//           {!currentEndTime ? "End Time" : currentEndTime + ":00"}
+//         </button>
+//         <ul className="dropdown-menu dropdown-menu-end">
+//           <select
+//             className="form-select"
+//             aria-label="Size 3 select example"
+//             value={currentEndTime}
+//             onChange={handleEndTime}
+//           >
+//             <option className="dropdown-item">Time</option>
+//             <option className="dropdown-item" value="0">
+//               0:00
+//             </option>
+//             <option className="dropdown-item" value="1">
+//               1:00
+//             </option>
+//             <option className="dropdown-item" value="2">
+//               2:00
+//             </option>
+//             <option className="dropdown-item" value="3">
+//               3:00
+//             </option>
+//             <option className="dropdown-item" value="4">
+//               4:00
+//             </option>
+//             <option className="dropdown-item" value="5">
+//               5:00
+//             </option>
+//             <option className="dropdown-item" value="6">
+//               6:00
+//             </option>
+//             <option className="dropdown-item" value="7">
+//               7:00
+//             </option>
+//             <option className="dropdown-item" value="8">
+//               8:00
+//             </option>
+//             <option className="dropdown-item" value="9">
+//               9:00
+//             </option>
+//             <option className="dropdown-item" value="10">
+//               10:00
+//             </option>
+//             <option className="dropdown-item" value="11">
+//               11:00
+//             </option>
+//             <option className="dropdown-item" value="12">
+//               12:00
+//             </option>
+//             <option className="dropdown-item" value="13">
+//               13:00
+//             </option>
+//             <option className="dropdown-item" value="14">
+//               14:00
+//             </option>
+//             <option className="dropdown-item" value="15">
+//               15:00
+//             </option>
+//             <option className="dropdown-item" value="16">
+//               16:00
+//             </option>
+//             <option className="dropdown-item" value="17">
+//               17:00
+//             </option>
+//             <option className="dropdown-item" value="18">
+//               18:00
+//             </option>
+//             <option className="dropdown-item" value="19">
+//               19:00
+//             </option>
+//             <option className="dropdown-item" value="20">
+//               20:00
+//             </option>
+//             <option className="dropdown-item" value="21">
+//               21:00
+//             </option>
+//             <option className="dropdown-item" value="22">
+//               22:00
+//             </option>
+//             <option className="dropdown-item" value="23">
+//               23:00
+//             </option>
+//             <option className="dropdown-item" value="24">
+//               24:00
+//             </option>
+//           </select>
+//         </ul>
+//       </div>
+//     </div>
+//   );
+// };
+
+// const UserInput: React.FC = () => {
+//   const [currentLat, setCurrentLat] = useState("0");
+//   const [currentLng, setCurrentLng] = useState("0");
 
 //   const initMap = async () => {
 //     // Initial Location
@@ -176,12 +522,8 @@
 //                 return response.json();
 //               })
 //               .then((data) => {
-//                 userInputInfo["location"] =
-//                   data["results"][0]["geometry"]["location"];
-//                 userLocation.lat =
-//                   data["results"][0]["geometry"]["location"].lat;
-//                 userLocation.lng =
-//                   data["results"][0]["geometry"]["location"].lng;
+//                 setCurrentLat(data["results"][0]["geometry"]["location"].lat);
+//                 setCurrentLng(data["results"][0]["geometry"]["location"].lng);
 //               })
 //               .catch((err) => console.log(err));
 //           };
@@ -206,50 +548,328 @@
 //     });
 //   };
 
+//   // Initialise a map
 //   useEffect(() => {
 //     initMap();
 //   }, []);
 
-//   // useEffect(() => {
-//   //   console.log("location uESEEFEFEFCT");
-//   //   console.log(userLocation);
-//   // }, [userLocation]);
+//   //Distance
+//   const [currentDistance, setCurrentDistance] = useState("1000");
+//   const changeDuration = (event: any) => {
+//     const sliderValue = event.target.value;
+//     setCurrentDistance(sliderValue);
+//   };
 
-//   console.log("========");
-//   console.log(userInputInfo);
-//   console.log(userLocation);
+//   // Transportation
+//   const [currentTransport, setCurrentTransport] = useState("");
+//   const changeTransport = (event: any) => {
+//     const thisTransport = event.target.value;
+//     setCurrentTransport(thisTransport);
+//   };
+
+//   useEffect(() => {
+//     console.log("uESEEFEFEFCT");
+//     userInputInfo["distance"] = currentDistance;
+//     userInputInfo["transportation"] = currentTransport;
+//     userLocation.lat = currentLat;
+//     userLocation.lng = currentLng;
+//     userDataBackend();
+//     console.log(userInputInfo);
+//   }, [currentLat, currentLng, currentDistance, currentTransport]);
+
+//   // REST for backend
+//   async function userDataBackend() {
+//     const port = "3000";
+//     const url = `http://localhost:${port}/test`; // change PORT
+//     await fetch(url, {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//       body: JSON.stringify(userInputInfo),
+//     })
+//       .then((response) => {
+//         if (!response.ok) {
+//           throw new Error("Fetch Error!");
+//         }
+//         return response.json();
+//       })
+//       .then((data) => {
+//         console.log(data);
+//       })
+//       .catch((error) => console.log(error.message));
+//   }
 
 //   return (
-//     <div>
+//     <div className="user_input_container">
+//       <div className="user_input_intro_container"></div>
 //       <div>
-//         <BudgetRange></BudgetRange>
+//         <SwipeableEdgeDrawer></SwipeableEdgeDrawer>
 //       </div>
-//       <div className="input-group flex-nowrap">
-//         <span className="input-group-text" id="addon-wrapping">
-//           Start Location
-//         </span>
-//         <Autocomplete>
-//           <div id="pac-container">
-//             <input
-//               id="pac-input"
-//               type="text"
-//               className="form-control"
-//               placeholder="Location"
-//               aria-label="Location"
-//               aria-describedby="addon-wrapping"
-//             ></input>
-//           </div>
-//         </Autocomplete>
-//       </div>
-//       <div className="sampleMapContainer">
-//         <div id="map"></div>
-//         <div id="infowindow-content">
-//           <span id="place-name" className="title"></span>
-//           <br />
-//           <span id="place-address"></span>
+
+//       <div>
+//         <div className="input-group flex-nowrap">
+//           <span className="input-group-text" id="addon-wrapping">
+//             Start Location
+//           </span>
+//           <Autocomplete>
+//             <div id="pac-container">
+//               <input
+//                 id="pac-input"
+//                 type="text"
+//                 className="form-control"
+//                 placeholder="Location"
+//                 aria-label="Location"
+//                 aria-describedby="addon-wrapping"
+//               ></input>
+//             </div>
+//           </Autocomplete>
 //         </div>
+//         <div className="sampleMapContainer">
+//           <div id="map"></div>
+//           <div id="infowindow-content">
+//             <span id="place-name" className="title"></span>
+//             <br />
+//             <span id="place-address"></span>
+//           </div>
+//         </div>
+//       </div>
+
+//       <div className="budget_range_container">
+//         <label htmlFor="customRange3" className="form-label">
+//           Distance (Current{" "}
+//           <span>{Number(currentDistance) / 1000 + " km"}</span>)
+//         </label>
+//         <input
+//           type="range"
+//           className="form-range"
+//           min="1000"
+//           max="50000"
+//           step="2000"
+//           id="customRange3"
+//           onChange={changeDuration}
+//         ></input>
+//       </div>
+//       <div
+//         className="btn-group"
+//         role="group"
+//         aria-label="Basic radio toggle button group"
+//       >
+//         <input
+//           type="radio"
+//           className="btn-check"
+//           name="transportRadio"
+//           id="transportRadio1"
+//           autoComplete="off"
+//           value="private"
+//           onClick={changeTransport}
+//         ></input>
+//         <label className="btn btn-outline-primary" htmlFor="transportRadio1">
+//           <div className="transport-icon">
+//             <svg
+//               className="car-taxi"
+//               width="14"
+//               height="14"
+//               viewBox="0 0 14 14"
+//               fill="none"
+//               xmlns="http://www.w3.org/2000/svg"
+//             >
+//               <g clip-path="url(#clip0_1222_33981)">
+//                 <path
+//                   d="M7 13.5C10.5899 13.5 13.5 10.5899 13.5 7C13.5 3.41015 10.5899 0.5 7 0.5C3.41015 0.5 0.5 3.41015 0.5 7C0.5 10.5899 3.41015 13.5 7 13.5Z"
+//                   stroke="black"
+//                   stroke-linecap="round"
+//                   stroke-linejoin="round"
+//                 />
+//                 <path
+//                   d="M7 11.5C9.48528 11.5 11.5 9.48528 11.5 7C11.5 4.51472 9.48528 2.5 7 2.5C4.51472 2.5 2.5 4.51472 2.5 7C2.5 9.48528 4.51472 11.5 7 11.5Z"
+//                   stroke="black"
+//                   stroke-linecap="round"
+//                   stroke-linejoin="round"
+//                 />
+//                 <path
+//                   d="M2.60938 6H11.3896"
+//                   stroke="black"
+//                   stroke-linecap="round"
+//                   stroke-linejoin="round"
+//                 />
+//                 <path
+//                   d="M7 9L4.5 6H9.5L7 9Z"
+//                   stroke="black"
+//                   stroke-linecap="round"
+//                   stroke-linejoin="round"
+//                 />
+//                 <path
+//                   d="M7 9V11.5"
+//                   stroke="black"
+//                   stroke-linecap="round"
+//                   stroke-linejoin="round"
+//                 />
+//               </g>
+//               <defs>
+//                 <clipPath id="clip0_1222_33981">
+//                   <rect width="14" height="14" fill="white" />
+//                 </clipPath>
+//               </defs>
+//             </svg>
+
+//             <div className="text-wrapper-2">Private</div>
+//           </div>
+//         </label>
+//       </div>
+//       <div
+//         className="btn-group"
+//         role="group"
+//         aria-label="Basic radio toggle button group"
+//       >
+//         <input
+//           type="radio"
+//           className="btn-check"
+//           name="transportRadio"
+//           id="transportRadio2"
+//           autoComplete="off"
+//           value="public"
+//           onClick={changeTransport}
+//         ></input>
+//         <label className="btn btn-outline-primary" htmlFor="transportRadio2">
+//           <div className="transport-icon-2">
+//             <svg
+//               className="car-taxi"
+//               width="14"
+//               height="14"
+//               viewBox="0 0 14 14"
+//               fill="none"
+//               xmlns="http://www.w3.org/2000/svg"
+//             >
+//               <path
+//                 d="M11.625 11.4918H12.4271C12.9793 11.4918 13.4271 11.0441 13.4271 10.4918V7.95694C13.4271 7.40465 12.9793 6.95694 12.4271 6.95694H11.875V3.375C11.875 2.82272 11.4273 2.375 10.875 2.375H1.68457C1.13229 2.375 0.68457 2.82272 0.68457 3.375V10.6341C0.68457 11.1078 1.06856 11.4918 1.54224 11.4918H2"
+//                 stroke="black"
+//                 stroke-linecap="round"
+//                 stroke-linejoin="round"
+//               />
+//               <path
+//                 d="M11.875 4.2085H0.685364"
+//                 stroke="black"
+//                 stroke-linecap="round"
+//                 stroke-linejoin="round"
+//               />
+//               <path
+//                 d="M11.875 6.95679H0.685364"
+//                 stroke="black"
+//                 stroke-linecap="round"
+//                 stroke-linejoin="round"
+//               />
+//               <path
+//                 d="M4.46411 4.2085V6.95307"
+//                 stroke="black"
+//                 stroke-linecap="round"
+//                 stroke-linejoin="round"
+//               />
+//               <path
+//                 d="M8.03125 4.2085V6.95307"
+//                 stroke="black"
+//                 stroke-linecap="round"
+//                 stroke-linejoin="round"
+//               />
+//               <path
+//                 d="M3.39002 12.874C4.16101 12.874 4.78602 12.249 4.78602 11.478C4.78602 10.707 4.16101 10.082 3.39002 10.082C2.61903 10.082 1.99402 10.707 1.99402 11.478C1.99402 12.249 2.61903 12.874 3.39002 12.874Z"
+//                 stroke="black"
+//                 stroke-linecap="round"
+//                 stroke-linejoin="round"
+//               />
+//               <path
+//                 d="M10.23 12.874C11.001 12.874 11.626 12.249 11.626 11.478C11.626 10.707 11.001 10.082 10.23 10.082C9.45899 10.082 8.83398 10.707 8.83398 11.478C8.83398 12.249 9.45899 12.874 10.23 12.874Z"
+//                 stroke="black"
+//                 stroke-linecap="round"
+//                 stroke-linejoin="round"
+//               />
+//               <path
+//                 d="M4.78638 11.4779H6.80475H8.83398"
+//                 stroke="black"
+//                 stroke-linecap="round"
+//                 stroke-linejoin="round"
+//               />
+//             </svg>
+
+//             <div className="text-wrapper-2">Public</div>
+//           </div>
+//         </label>
+//       </div>
+//       <div
+//         className="btn-group"
+//         role="group"
+//         aria-label="Basic radio toggle button group"
+//       >
+//         <input
+//           type="radio"
+//           className="btn-check"
+//           name="transportRadio"
+//           id="transportRadio3"
+//           autoComplete="off"
+//           value="walking"
+//           onClick={changeTransport}
+//         ></input>
+//         <label className="btn btn-outline-primary" htmlFor="transportRadio3">
+//           <div className="transport-icon-3">
+//             <svg
+//               className="car-taxi"
+//               width="14"
+//               height="14"
+//               viewBox="0 0 14 14"
+//               fill="none"
+//               xmlns="http://www.w3.org/2000/svg"
+//             >
+//               <g clip-path="url(#clip0_1222_33722)">
+//                 <path
+//                   d="M5.21436 1.64286C5.21436 1.14975 5.6141 0.75 6.10721 0.75H12.3572C12.8503 0.75 13.2501 1.14975 13.2501 1.64286V12.3571C13.2501 12.8503 12.8503 13.25 12.3572 13.25H9.23221"
+//                   stroke="black"
+//                   stroke-linecap="round"
+//                   stroke-linejoin="round"
+//                 />
+//                 <path
+//                   d="M8.11598 7.001C8.9792 7.001 9.67898 6.30122 9.67898 5.438C9.67898 4.57478 8.9792 3.875 8.11598 3.875C7.25276 3.875 6.55298 4.57478 6.55298 5.438C6.55298 6.30122 7.25276 7.001 8.11598 7.001Z"
+//                   stroke="black"
+//                   stroke-linecap="round"
+//                   stroke-linejoin="round"
+//                 />
+//                 <path
+//                   d="M2.53564 6.10718L4.35369 6.1072C4.6189 6.1072 4.87325 6.21256 5.06078 6.40009L7.6 8.93931C7.78754 9.12685 8.04191 9.2322 8.30713 9.2322L9.6785 9.23218"
+//                   stroke="black"
+//                   stroke-linecap="round"
+//                   stroke-linejoin="round"
+//                 />
+//                 <path
+//                   d="M6.10714 7.44641L3.72146 9.83209C3.53393 10.0196 3.27957 10.125 3.01436 10.125H0.75"
+//                   stroke="black"
+//                   stroke-linecap="round"
+//                   stroke-linejoin="round"
+//                 />
+//                 <path
+//                   d="M4.32141 9.23218L5.81423 10.725C6.00177 10.9125 6.10713 11.1669 6.10713 11.4321V13.25"
+//                   stroke="black"
+//                   stroke-linecap="round"
+//                   stroke-linejoin="round"
+//                 />
+//               </g>
+//               <defs>
+//                 <clipPath id="clip0_1222_33722">
+//                   <rect width="14" height="14" fill="white" />
+//                 </clipPath>
+//               </defs>
+//             </svg>
+
+//             <div className="text-wrapper-2">Walking</div>
+//           </div>
+//         </label>
+//       </div>
+//       <div>
+//         <UserBudget></UserBudget>
+//       </div>
+//       <div>
+//         <UserTime></UserTime>
 //       </div>
 //     </div>
 //   );
 // };
+
 // export default UserInput;

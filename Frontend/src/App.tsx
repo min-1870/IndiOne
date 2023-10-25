@@ -1,12 +1,19 @@
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.css";
 import UserInput from "./components/UserInput";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Results from "./components/Results";
 
 function App() {
   return (
-    <div className="user_input_container">
-      <UserInput></UserInput>
-    </div>
+    <>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<UserInput />} />
+          <Route path="/results" element={<Results />} />
+        </Routes>
+      </BrowserRouter>
+    </>
   );
 }
 

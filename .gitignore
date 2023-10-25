@@ -4,4 +4,4 @@ Backend/keys.json
 
 #Ignore rules for frontend:
 Frontend/node_modules
-.env
+Frontend/.env

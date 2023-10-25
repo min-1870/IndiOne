@@ -15,12 +15,6 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import Rating, { IconContainerProps } from "@mui/material/Rating";
-import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
-import SentimentDissatisfiedIcon from "@mui/icons-material/SentimentDissatisfied";
-import SentimentSatisfiedIcon from "@mui/icons-material/SentimentSatisfied";
-import SentimentSatisfiedAltIcon from "@mui/icons-material/SentimentSatisfiedAltOutlined";
-import SentimentVerySatisfiedIcon from "@mui/icons-material/SentimentVerySatisfied";
 import DirectionsWalkIcon from "@mui/icons-material/DirectionsWalk";
 import DepartureBoardIcon from "@mui/icons-material/DepartureBoard";
 import TwoWheelerIcon from "@mui/icons-material/TwoWheeler";
@@ -30,6 +24,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import Groups3Icon from "@mui/icons-material/Groups3";
 import NavigationIcon from "@mui/icons-material/Navigation";
 import Fab from "@mui/material/Fab";
+import { useNavigate } from "react-router-dom";
 
 interface userData {
   location: location;
@@ -60,6 +55,8 @@ let userInputInfo: userData = {
 let selectedAddress: string = "Starting Location";
 
 const drawerBleeding = 56;
+
+let itineraryResult: any;
 
 interface Props {
   window?: () => Window;
@@ -169,45 +166,6 @@ function SwipeableEdgeDrawer(props: Props) {
     </div>
   );
 }
-
-function IconContainer(props: IconContainerProps) {
-  const { value, ...other } = props;
-  return <span {...other}>{customIcons[value].icon}</span>;
-}
-
-const StyledRating = styled(Rating)(({ theme }) => ({
-  "& .MuiRating-iconEmpty .MuiSvgIcon-root": {
-    color: theme.palette.action.disabled,
-  },
-}));
-
-const customIcons: {
-  [index: string]: {
-    icon: React.ReactElement;
-    label: string;
-  };
-} = {
-  1: {
-    icon: <SentimentVeryDissatisfiedIcon color="error" />,
-    label: "Very Dissatisfied",
-  },
-  2: {
-    icon: <SentimentDissatisfiedIcon color="error" />,
-    label: "Dissatisfied",
-  },
-  3: {
-    icon: <SentimentSatisfiedIcon color="warning" />,
-    label: "Neutral",
-  },
-  4: {
-    icon: <SentimentSatisfiedAltIcon color="success" />,
-    label: "Satisfied",
-  },
-  5: {
-    icon: <SentimentVerySatisfiedIcon color="success" />,
-    label: "Very Satisfied",
-  },
-};
 
 const UserBudget: React.FC = () => {
   const [currentBudget, setCurrentBudget] = useState("0");
@@ -470,8 +428,12 @@ const UserMap: React.FC = () => {
                 return response.json();
               })
               .then((data) => {
-                setCurrentLat(data["results"][0]["geometry"]["location"].lat);
-                setCurrentLng(data["results"][0]["geometry"]["location"].lng);
+                setCurrentLat(
+                  String(data["results"][0]["geometry"]["location"].lat)
+                );
+                setCurrentLng(
+                  String(data["results"][0]["geometry"]["location"].lng)
+                );
               })
               .catch((err) => console.log(err));
           };
@@ -781,35 +743,21 @@ const UserTemplate: React.FC = () => {
   );
 };
 
-// REST for backend
-async function findItinerary() {
-  async function userDataBackend() {
-    const port = "5000";
-    const url = `http://127.0.0.1:${port}/route`; // change PORT
-    await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(userInputInfo),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Fetch Error!");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        console.log("Calculating Itinerary Done!");
-        console.log(data);
-        console.log(data["categorizedRoutes"]);
-      })
-      .catch((error) => console.log(error.message));
-  }
-  await userDataBackend();
-}
-
 const UserInput: React.FC = () => {
+  const navigate = useNavigate();
+  function sendUserInput() {
+    navigate("/results", {
+      state: {
+        budget: userInputInfo["budget"],
+        location: userInputInfo["location"],
+        distance: userInputInfo["distance"],
+        time: userInputInfo["time"],
+        duration: userInputInfo["duration"],
+        transportation: userInputInfo["transportation"],
+        template: userInputInfo["template"],
+      },
+    });
+  }
   return (
     <div className="user_input_container">
       <div className="user_input_intro_container">
@@ -874,8 +822,8 @@ const UserInput: React.FC = () => {
           </div>
         </div>
         <div className="userInputQuery" id="navigate">
-          <Box sx={{ "& > :not(style)": { m: 1 } }} onClick={findItinerary}>
-            <Fab variant="extended" color="primary">
+          <Box sx={{ "& > :not(style)": { m: 1 } }}>
+            <Fab variant="extended" color="primary" onClick={sendUserInput}>
               <NavigationIcon sx={{ mr: 1 }} />
               Find my itinerary
             </Fab>

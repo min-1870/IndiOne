@@ -16,9 +16,16 @@
 
 ### Input API key
 
-1.Create a text file call **api_key.txt**
+1.Create a json file call **keys.json**
 
-2.Paste your api key in the **api_key.txt**
+2.Paste your api key in the file
+```
+{
+    "googleApi": "GOOGLE API KEY",
+    "databaseUrl": "MONGO DB API KEY"
+}
+```
+
 
 ### Run Server
 
@@ -28,13 +35,3 @@
 
 1.Type `deactivate`
 
-# Frontend
-
-NONE
-
-# RESTful API
-
-
-|Type|Address|Header|
-|--|--|--|
-|GET|http://127.0.0.1:5000/ |{ budget: Integer, distance: Integer, people: Integer, purpose: String, time: Float, transportation: String, priority: ???  }|

@@ -1,7 +1,7 @@
 import "bootstrap/dist/css/bootstrap.css";
 import { useEffect, useState } from "react";
 import "./UserInput.css";
-import { Autocomplete } from "@react-google-maps/api";
+import { Autocomplete, GoogleMap } from "@react-google-maps/api";
 import * as React from "react";
 import { Global } from "@emotion/react";
 import { styled } from "@mui/material/styles";

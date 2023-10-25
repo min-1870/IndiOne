@@ -1,4 +1,4 @@
-.main-container {
+.main-loading-container {
     margin-top: 20%;
     gap: 5em;
     display: flex;
@@ -7,12 +7,18 @@
     justify-content: center;
 }
 
-.main-container h1 {
+.main-loading-container h1 {
     color:blueviolet
 }
 
+.MuiMobileStepper-root {
+    height: 100%;
+}
+
+
+
 @media only screen and (max-width: 320px) {
-    .main-container h1 {
+    .main-loading-container h1 {
         font-size: 25px;
     }
   }

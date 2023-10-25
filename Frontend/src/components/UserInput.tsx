@@ -24,6 +24,12 @@ import SentimentVerySatisfiedIcon from "@mui/icons-material/SentimentVerySatisfi
 import DirectionsWalkIcon from "@mui/icons-material/DirectionsWalk";
 import DepartureBoardIcon from "@mui/icons-material/DepartureBoard";
 import TwoWheelerIcon from "@mui/icons-material/TwoWheeler";
+import FamilyRestroomIcon from "@mui/icons-material/FamilyRestroom";
+import PersonIcon from "@mui/icons-material/Person";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import Groups3Icon from "@mui/icons-material/Groups3";
+import NavigationIcon from "@mui/icons-material/Navigation";
+import Fab from "@mui/material/Fab";
 
 interface userData {
   location: location;
@@ -43,12 +49,12 @@ interface location {
 let userLocation: location = { lat: "", lng: "" };
 let userInputInfo: userData = {
   location: userLocation,
-  distance: "",
+  distance: "1",
   time: "",
   duration: "",
   transportation: "",
-  budget: "",
-  template: "friends",
+  budget: "0",
+  template: "",
 };
 
 let selectedAddress: string = "Starting Location";
@@ -58,14 +64,6 @@ const drawerBleeding = 56;
 interface Props {
   window?: () => Window;
 }
-
-const Root = styled("div")(({ theme }) => ({
-  height: "100%",
-  backgroundColor:
-    theme.palette.mode === "light"
-      ? grey[100]
-      : theme.palette.background.default,
-}));
 
 const StyledBox = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "light" ? "#fff" : grey[800],
@@ -215,14 +213,13 @@ const UserBudget: React.FC = () => {
   const [currentBudget, setCurrentBudget] = useState("0");
 
   useEffect(() => {
-    userInputInfo["budget"] = String(Number(currentBudget) - 1);
-    console.log(userInputInfo);
+    userInputInfo["budget"] = String(currentBudget);
   }, [currentBudget]);
 
   function handleBudget(event: any) {
     const value = event.target.value;
     if (value !== null) {
-      setCurrentBudget(String(Number(value) + 1));
+      setCurrentBudget(String(Number(value)));
     }
   }
 
@@ -305,12 +302,10 @@ const UserTime: React.FC = () => {
   const [currentEndTime, setCurrentEndTime] = useState("");
 
   useEffect(() => {
-    console.log("uESEEFEFEFCT");
     userInputInfo["time"] = String(currentStartTime);
     userInputInfo["duration"] = String(
       Number(currentEndTime) - Number(currentStartTime)
     );
-    console.log(userInputInfo);
   }, [currentStartTime, currentEndTime]);
 
   const handleStartChange = (event: SelectChangeEvent) => {
@@ -507,10 +502,8 @@ const UserMap: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    console.log("uESEEFEFEFCT");
     userLocation.lat = currentLat;
     userLocation.lng = currentLng;
-    console.log(userInputInfo);
   }, [currentLat, currentLng]);
 
   return (
@@ -543,7 +536,7 @@ const UserMap: React.FC = () => {
 
 //Distance
 const UserDistance: React.FC = () => {
-  const [currentDistance, setCurrentDistance] = useState("0");
+  const [currentDistance, setCurrentDistance] = useState("1000");
 
   function getDistance(
     event: Event,
@@ -551,14 +544,12 @@ const UserDistance: React.FC = () => {
     activeThumb: number
   ) {
     if (event !== null && event.target !== null) {
-      setCurrentDistance(String(value));
+      setCurrentDistance(String(value * 1000));
     }
   }
 
   useEffect(() => {
-    console.log("uESEEFEFEFCT");
     userInputInfo["distance"] = currentDistance;
-    console.log(userInputInfo);
   }, [currentDistance]);
 
   const marks = [
@@ -591,7 +582,7 @@ const UserDistance: React.FC = () => {
   function valuetext(value: number) {
     return `${value}km`;
   }
-  const color = ["#FF5733"];
+
   return (
     <Box sx={{ width: "100%" }}>
       <Slider
@@ -617,9 +608,7 @@ const UserTransport: React.FC = () => {
     setCurrentTransport(thisTransport);
   };
   useEffect(() => {
-    console.log("uESEEFEFEFCT");
     userInputInfo["transportation"] = currentTransport;
-    console.log(userInputInfo);
   }, [currentTransport]);
 
   return (
@@ -691,11 +680,112 @@ const UserTransport: React.FC = () => {
   );
 };
 
-const UserInput: React.FC = () => {
-  // REST for backend
+const UserTemplate: React.FC = () => {
+  // Template
+  const [currentTemplate, setCurrentTemplate] = useState("");
+  const changeTemplate = (event: any) => {
+    const thisTemplate = event.target.value;
+    setCurrentTemplate(thisTemplate);
+  };
+  useEffect(() => {
+    userInputInfo["template"] = currentTemplate;
+  }, [currentTemplate]);
+
+  return (
+    <div className="template-btn-container">
+      <div
+        className="btn-group"
+        role="group"
+        aria-label="Basic radio toggle button group"
+      >
+        <input
+          type="radio"
+          className="btn-check"
+          name="templateRadio"
+          id="templateRadio1"
+          autoComplete="off"
+          value="solo"
+          onClick={changeTemplate}
+        ></input>
+        <label className="btn btn-outline-primary" htmlFor="templateRadio1">
+          <div className="transport-icon">
+            <PersonIcon></PersonIcon>
+            <div className="text-wrapper">Solo</div>
+          </div>
+        </label>
+      </div>
+      <div
+        className="btn-group"
+        role="group"
+        aria-label="Basic radio toggle button group"
+      >
+        <input
+          type="radio"
+          className="btn-check"
+          name="templateRadio"
+          id="templateRadio2"
+          autoComplete="off"
+          value="couple"
+          onClick={changeTemplate}
+        ></input>
+        <label className="btn btn-outline-primary" htmlFor="templateRadio2">
+          <div className="transport-icon-2">
+            <FavoriteIcon></FavoriteIcon>
+            <div className="text-wrapper-2">Couple</div>
+          </div>
+        </label>
+      </div>
+      <div
+        className="btn-group"
+        role="group"
+        aria-label="Basic radio toggle button group"
+      >
+        <input
+          type="radio"
+          className="btn-check"
+          name="templateRadio"
+          id="templateRadio3"
+          autoComplete="off"
+          value="friends"
+          onClick={changeTemplate}
+        ></input>
+        <label className="btn btn-outline-primary" htmlFor="templateRadio3">
+          <div className="transport-icon-3">
+            <Groups3Icon></Groups3Icon>
+            <div className="text-wrapper-3">Friends</div>
+          </div>
+        </label>
+      </div>
+      <div
+        className="btn-group"
+        role="group"
+        aria-label="Basic radio toggle button group"
+      >
+        <input
+          type="radio"
+          className="btn-check"
+          name="templateRadio"
+          id="templateRadio4"
+          autoComplete="off"
+          value="family"
+          onClick={changeTemplate}
+        ></input>
+        <label className="btn btn-outline-primary" htmlFor="templateRadio4">
+          <div className="transport-icon-4">
+            <FamilyRestroomIcon></FamilyRestroomIcon>
+            <div className="text-wrapper-4">Family</div>
+          </div>
+        </label>
+      </div>
+    </div>
+  );
+};
+
+// REST for backend
+async function findItinerary() {
   async function userDataBackend() {
-    const port = "3000";
-    const url = `http://localhost:${port}/test`; // change PORT
+    const port = "5000";
+    const url = `http://127.0.0.1:${port}/route`; // change PORT
     await fetch(url, {
       method: "POST",
       headers: {
@@ -710,11 +800,16 @@ const UserInput: React.FC = () => {
         return response.json();
       })
       .then((data) => {
+        console.log("Calculating Itinerary Done!");
         console.log(data);
+        console.log(data["categorizedRoutes"]);
       })
       .catch((error) => console.log(error.message));
   }
+  await userDataBackend();
+}
 
+const UserInput: React.FC = () => {
   return (
     <div className="user_input_container">
       <div className="user_input_intro_container">
@@ -722,6 +817,16 @@ const UserInput: React.FC = () => {
       </div>
 
       <div className="user_input_form_container">
+        <div className="userInputQuery">
+          <div className="fromwhere-description">
+            <p>
+              <b>Travel mode</b>
+            </p>
+          </div>
+          <div>
+            <UserTemplate></UserTemplate>
+          </div>
+        </div>
         <div className="userInputQuery">
           <div className="fromwhere-description">
             <p>
@@ -764,9 +869,17 @@ const UserInput: React.FC = () => {
               <b>Transportation</b>
             </p>
           </div>
-          <div id="">
+          <div id="transportation">
             <UserTransport></UserTransport>
           </div>
+        </div>
+        <div className="userInputQuery" id="navigate">
+          <Box sx={{ "& > :not(style)": { m: 1 } }} onClick={findItinerary}>
+            <Fab variant="extended" color="primary">
+              <NavigationIcon sx={{ mr: 1 }} />
+              Find my itinerary
+            </Fab>
+          </Box>
         </div>
       </div>
     </div>

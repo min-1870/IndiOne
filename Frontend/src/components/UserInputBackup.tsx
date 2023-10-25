@@ -5,18 +5,30 @@
 // import * as React from "react";
 // import { Global } from "@emotion/react";
 // import { styled } from "@mui/material/styles";
-// import CssBaseline from "@mui/material/CssBaseline";
 // import { grey } from "@mui/material/colors";
-// import Button from "@mui/material/Button";
 // import Box from "@mui/material/Box";
-// import Skeleton from "@mui/material/Skeleton";
 // import Typography from "@mui/material/Typography";
 // import SwipeableDrawer from "@mui/material/SwipeableDrawer";
+// import SearchIcon from "@mui/icons-material/Search";
+// import Slider from "@mui/material/Slider";
+// import InputLabel from "@mui/material/InputLabel";
+// import MenuItem from "@mui/material/MenuItem";
+// import FormControl from "@mui/material/FormControl";
+// import Select, { SelectChangeEvent } from "@mui/material/Select";
+// import Rating, { IconContainerProps } from "@mui/material/Rating";
+// import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
+// import SentimentDissatisfiedIcon from "@mui/icons-material/SentimentDissatisfied";
+// import SentimentSatisfiedIcon from "@mui/icons-material/SentimentSatisfied";
+// import SentimentSatisfiedAltIcon from "@mui/icons-material/SentimentSatisfiedAltOutlined";
+// import SentimentVerySatisfiedIcon from "@mui/icons-material/SentimentVerySatisfied";
+// import DirectionsWalkIcon from "@mui/icons-material/DirectionsWalk";
+// import DepartureBoardIcon from "@mui/icons-material/DepartureBoard";
+// import TwoWheelerIcon from "@mui/icons-material/TwoWheeler";
 
 // interface userData {
 //   location: location;
 //   distance: string;
-//   time: string;
+//   time: string | null;
 //   duration: string;
 //   transportation: string;
 //   budget: string;
@@ -28,13 +40,22 @@
 //   lng: string;
 // }
 
+// let userLocation: location = { lat: "", lng: "" };
+// let userInputInfo: userData = {
+//   location: userLocation,
+//   distance: "",
+//   time: "",
+//   duration: "",
+//   transportation: "",
+//   budget: "",
+//   template: "friends",
+// };
+
+// let selectedAddress: string = "Starting Location";
+
 // const drawerBleeding = 56;
 
 // interface Props {
-//   /**
-//    * Injected by the documentation to work in an iframe.
-//    * You won't need it on your project.
-//    */
 //   window?: () => Window;
 // }
 
@@ -72,20 +93,45 @@
 //   const container =
 //     window !== undefined ? () => window().document.body : undefined;
 
+//   // Change font size
+//   const updateFontSize = () => {
+//     const label = document.getElementById("wheretotext2");
+//     const barrier = document.getElementById("wheretotext");
+//     if (label !== null && barrier !== null) {
+//       if (label.innerText !== "Starting Location") {
+//         label.style.fontSize = "15px";
+//         if (label.offsetHeight > barrier.offsetHeight) {
+//           label.style.fontSize = "10px";
+//         }
+//       }
+//     }
+//   };
+
+//   useEffect(() => {
+//     updateFontSize();
+//   }, [selectedAddress]);
+
 //   return (
-//     <Root>
-//       <CssBaseline />
+//     <div style={{ height: "100%" }}>
 //       <Global
 //         styles={{
 //           ".MuiDrawer-root > .MuiPaper-root": {
-//             height: `calc(50% - ${drawerBleeding}px)`,
+//             height: `calc(95% - ${drawerBleeding}px)`,
 //             overflow: "visible",
 //           },
 //         }}
 //       />
-//       <Box sx={{ textAlign: "center", pt: 1 }}>
-//         <Button onClick={toggleDrawer(true)}>Open</Button>
-//       </Box>
+
+//       <div onClick={toggleDrawer(true)} className="fromWhere-searchbar">
+//         <div id="wheretonextMag">
+//           <SearchIcon sx={{ backgroundColor: "#fffff" }}></SearchIcon>
+//         </div>
+
+//         <button id="wheretotext">
+//           <label id="wheretotext2">{selectedAddress}</label>
+//         </button>
+//       </div>
+
 //       <SwipeableDrawer
 //         container={container}
 //         anchor="bottom"
@@ -93,7 +139,7 @@
 //         onClose={toggleDrawer(false)}
 //         onOpen={toggleDrawer(true)}
 //         swipeAreaWidth={drawerBleeding}
-//         disableSwipeToOpen={false}
+//         disableSwipeToOpen={true}
 //         ModalProps={{
 //           keepMounted: false,
 //         }}
@@ -110,10 +156,9 @@
 //           }}
 //         >
 //           <Puller />
-//           <Typography sx={{ p: 2, color: "text.secondary" }}>
-//             Google Maps
-//           </Typography>
+//           <Typography sx={{ p: 4, color: "text.secondary" }}></Typography>
 //         </StyledBox>
+//         <UserMap></UserMap>
 //         <StyledBox
 //           sx={{
 //             px: 2,
@@ -123,33 +168,63 @@
 //           }}
 //         ></StyledBox>
 //       </SwipeableDrawer>
-//     </Root>
+//     </div>
 //   );
 // }
 
-// let userLocation: location = { lat: "", lng: "" };
-// let userInputInfo: userData = {
-//   location: userLocation,
-//   distance: "",
-//   time: "",
-//   duration: "",
-//   transportation: "",
-//   budget: "",
-//   template: "friends",
+// function IconContainer(props: IconContainerProps) {
+//   const { value, ...other } = props;
+//   return <span {...other}>{customIcons[value].icon}</span>;
+// }
+
+// const StyledRating = styled(Rating)(({ theme }) => ({
+//   "& .MuiRating-iconEmpty .MuiSvgIcon-root": {
+//     color: theme.palette.action.disabled,
+//   },
+// }));
+
+// const customIcons: {
+//   [index: string]: {
+//     icon: React.ReactElement;
+//     label: string;
+//   };
+// } = {
+//   1: {
+//     icon: <SentimentVeryDissatisfiedIcon color="error" />,
+//     label: "Very Dissatisfied",
+//   },
+//   2: {
+//     icon: <SentimentDissatisfiedIcon color="error" />,
+//     label: "Dissatisfied",
+//   },
+//   3: {
+//     icon: <SentimentSatisfiedIcon color="warning" />,
+//     label: "Neutral",
+//   },
+//   4: {
+//     icon: <SentimentSatisfiedAltIcon color="success" />,
+//     label: "Satisfied",
+//   },
+//   5: {
+//     icon: <SentimentVerySatisfiedIcon color="success" />,
+//     label: "Very Satisfied",
+//   },
 // };
 
 // const UserBudget: React.FC = () => {
 //   const [currentBudget, setCurrentBudget] = useState("0");
-//   const changeBudget = (event: any) => {
-//     const budgetSelected = event.target.value;
-//     setCurrentBudget(budgetSelected);
-//   };
 
 //   useEffect(() => {
-//     console.log("uESEEFEFEFCT");
-//     userInputInfo["budget"] = currentBudget;
+//     userInputInfo["budget"] = String(Number(currentBudget) - 1);
 //     console.log(userInputInfo);
 //   }, [currentBudget]);
+
+//   function handleBudget(event: any) {
+//     const value = event.target.value;
+//     if (value !== null) {
+//       setCurrentBudget(String(Number(value) + 1));
+//     }
+//   }
 
 //   return (
 //     <div
@@ -163,7 +238,7 @@
 //         name="btnradio"
 //         id="btnradio0"
 //         autoComplete="off"
-//         onClick={changeBudget}
+//         onClick={handleBudget}
 //         value="0"
 //       ></input>
 //       <label className="btn btn-outline-primary" htmlFor="btnradio0">
@@ -175,7 +250,7 @@
 //         name="btnradio"
 //         id="btnradio1"
 //         autoComplete="off"
-//         onClick={changeBudget}
+//         onClick={handleBudget}
 //         value="1"
 //       ></input>
 //       <label className="btn btn-outline-primary" htmlFor="btnradio1">
@@ -188,7 +263,7 @@
 //         name="btnradio"
 //         id="btnradio2"
 //         autoComplete="off"
-//         onClick={changeBudget}
+//         onClick={handleBudget}
 //         value="2"
 //       ></input>
 //       <label className="btn btn-outline-primary" htmlFor="btnradio2">
@@ -201,7 +276,7 @@
 //         name="btnradio"
 //         id="btnradio3"
 //         autoComplete="off"
-//         onClick={changeBudget}
+//         onClick={handleBudget}
 //         value="3"
 //       ></input>
 //       <label className="btn btn-outline-primary" htmlFor="btnradio3">
@@ -213,7 +288,7 @@
 //         name="btnradio"
 //         id="btnradio4"
 //         autoComplete="off"
-//         onClick={changeBudget}
+//         onClick={handleBudget}
 //         value="4"
 //       ></input>
 //       <label className="btn btn-outline-primary" htmlFor="btnradio4">
@@ -225,233 +300,109 @@
 
 // const UserTime: React.FC = () => {
 //   // Start & End Time
+
 //   const [currentStartTime, setCurrentStartTime] = useState("");
 //   const [currentEndTime, setCurrentEndTime] = useState("");
 
-//   const handleStartTime = (event: any) => {
-//     const time = event.target.value;
-//     setCurrentStartTime(time);
-//   };
-
-//   const handleEndTime = (event: any) => {
-//     const time = event.target.value;
-//     setCurrentEndTime(time);
-//   };
-
 //   useEffect(() => {
 //     console.log("uESEEFEFEFCT");
-//     userInputInfo["time"] = currentStartTime;
+//     userInputInfo["time"] = String(currentStartTime);
 //     userInputInfo["duration"] = String(
 //       Number(currentEndTime) - Number(currentStartTime)
 //     );
 //     console.log(userInputInfo);
 //   }, [currentStartTime, currentEndTime]);
 
+//   const handleStartChange = (event: SelectChangeEvent) => {
+//     setCurrentStartTime(event.target.value as string);
+//   };
+//   const handleEndChange = (event: SelectChangeEvent) => {
+//     setCurrentEndTime(event.target.value as string);
+//   };
+
 //   return (
 //     <div className="dateContainer">
-//       <div className="btn-group">
-//         <button
-//           type="button"
-//           className="btn btn-secondary dropdown-toggle"
-//           data-bs-toggle="dropdown"
-//           aria-expanded="false"
-//           id="eachButton"
+//       <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+//         <InputLabel id="demo-simple-select-label">Start</InputLabel>
+//         <Select
+//           labelId="demo-simple-select-label"
+//           id="demo-simple-select"
+//           value={currentStartTime}
+//           label="Start"
+//           onChange={handleStartChange}
 //         >
-//           {!currentStartTime ? "Start Time" : currentStartTime + ":00"}
-//         </button>
-//         <ul className="dropdown-menu dropdown-menu-end">
-//           <select
-//             className="form-select"
-//             aria-label="Size 3 select example"
-//             value={currentStartTime}
-//             onChange={handleStartTime}
-//           >
-//             <option className="dropdown-item">Time</option>
-//             <option className="dropdown-item" value="0">
-//               0:00
-//             </option>
-//             <option className="dropdown-item" value="1">
-//               1:00
-//             </option>
-//             <option className="dropdown-item" value="2">
-//               2:00
-//             </option>
-//             <option className="dropdown-item" value="3">
-//               3:00
-//             </option>
-//             <option className="dropdown-item" value="4">
-//               4:00
-//             </option>
-//             <option className="dropdown-item" value="5">
-//               5:00
-//             </option>
-//             <option className="dropdown-item" value="6">
-//               6:00
-//             </option>
-//             <option className="dropdown-item" value="7">
-//               7:00
-//             </option>
-//             <option className="dropdown-item" value="8">
-//               8:00
-//             </option>
-//             <option className="dropdown-item" value="9">
-//               9:00
-//             </option>
-//             <option className="dropdown-item" value="10">
-//               10:00
-//             </option>
-//             <option className="dropdown-item" value="11">
-//               11:00
-//             </option>
-//             <option className="dropdown-item" value="12">
-//               12:00
-//             </option>
-//             <option className="dropdown-item" value="13">
-//               13:00
-//             </option>
-//             <option className="dropdown-item" value="14">
-//               14:00
-//             </option>
-//             <option className="dropdown-item" value="15">
-//               15:00
-//             </option>
-//             <option className="dropdown-item" value="16">
-//               16:00
-//             </option>
-//             <option className="dropdown-item" value="17">
-//               17:00
-//             </option>
-//             <option className="dropdown-item" value="18">
-//               18:00
-//             </option>
-//             <option className="dropdown-item" value="19">
-//               19:00
-//             </option>
-//             <option className="dropdown-item" value="20">
-//               20:00
-//             </option>
-//             <option className="dropdown-item" value="21">
-//               21:00
-//             </option>
-//             <option className="dropdown-item" value="22">
-//               22:00
-//             </option>
-//             <option className="dropdown-item" value="23">
-//               23:00
-//             </option>
-//             <option className="dropdown-item" value="24">
-//               24:00
-//             </option>
-//           </select>
-//         </ul>
-//       </div>
-//       <div className="btn-group">
-//         <button
-//           type="button"
-//           className="btn btn-secondary dropdown-toggle"
-//           data-bs-toggle="dropdown"
-//           aria-expanded="false"
-//           id="eachButton"
+//           <MenuItem value={8}>8:00</MenuItem>
+//           <MenuItem value={9}>9:00</MenuItem>
+//           <MenuItem value={10}>10:00</MenuItem>
+//           <MenuItem value={11}>11:00</MenuItem>
+//           <MenuItem value={12}>12:00</MenuItem>
+//           <MenuItem value={13}>13:00</MenuItem>
+//           <MenuItem value={14}>14:00</MenuItem>
+//           <MenuItem value={15}>15:00</MenuItem>
+//           <MenuItem value={16}>16:00</MenuItem>
+//           <MenuItem value={17}>17:00</MenuItem>
+//           <MenuItem value={18}>18:00</MenuItem>
+//           <MenuItem value={19}>19:00</MenuItem>
+//           <MenuItem value={20}>20:00</MenuItem>
+//           <MenuItem value={21}>21:00</MenuItem>
+//           <MenuItem value={22}>22:00</MenuItem>
+//           <MenuItem value={23}>23:00</MenuItem>
+//           <MenuItem value={0}>0:00</MenuItem>
+//           <MenuItem value={1}>1:00</MenuItem>
+//           <MenuItem value={2}>2:00</MenuItem>
+//           <MenuItem value={3}>3:00</MenuItem>
+//           <MenuItem value={4}>4:00</MenuItem>
+//           <MenuItem value={5}>5:00</MenuItem>
+//           <MenuItem value={6}>6:00</MenuItem>
+//           <MenuItem value={7}>7:00</MenuItem>
+//         </Select>
+//       </FormControl>
+//       <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+//         <InputLabel id="demo-simple-select-label">Finish</InputLabel>
+//         <Select
+//           labelId="demo-simple-select-label"
+//           id="demo-simple-select"
+//           value={currentEndTime}
+//           label="Finish"
+//           onChange={handleEndChange}
 //         >
-//           {!currentEndTime ? "End Time" : currentEndTime + ":00"}
-//         </button>
-//         <ul className="dropdown-menu dropdown-menu-end">
-//           <select
-//             className="form-select"
-//             aria-label="Size 3 select example"
-//             value={currentEndTime}
-//             onChange={handleEndTime}
-//           >
-//             <option className="dropdown-item">Time</option>
-//             <option className="dropdown-item" value="0">
-//               0:00
-//             </option>
-//             <option className="dropdown-item" value="1">
-//               1:00
-//             </option>
-//             <option className="dropdown-item" value="2">
-//               2:00
-//             </option>
-//             <option className="dropdown-item" value="3">
-//               3:00
-//             </option>
-//             <option className="dropdown-item" value="4">
-//               4:00
-//             </option>
-//             <option className="dropdown-item" value="5">
-//               5:00
-//             </option>
-//             <option className="dropdown-item" value="6">
-//               6:00
-//             </option>
-//             <option className="dropdown-item" value="7">
-//               7:00
-//             </option>
-//             <option className="dropdown-item" value="8">
-//               8:00
-//             </option>
-//             <option className="dropdown-item" value="9">
-//               9:00
-//             </option>
-//             <option className="dropdown-item" value="10">
-//               10:00
-//             </option>
-//             <option className="dropdown-item" value="11">
-//               11:00
-//             </option>
-//             <option className="dropdown-item" value="12">
-//               12:00
-//             </option>
-//             <option className="dropdown-item" value="13">
-//               13:00
-//             </option>
-//             <option className="dropdown-item" value="14">
-//               14:00
-//             </option>
-//             <option className="dropdown-item" value="15">
-//               15:00
-//             </option>
-//             <option className="dropdown-item" value="16">
-//               16:00
-//             </option>
-//             <option className="dropdown-item" value="17">
-//               17:00
-//             </option>
-//             <option className="dropdown-item" value="18">
-//               18:00
-//             </option>
-//             <option className="dropdown-item" value="19">
-//               19:00
-//             </option>
-//             <option className="dropdown-item" value="20">
-//               20:00
-//             </option>
-//             <option className="dropdown-item" value="21">
-//               21:00
-//             </option>
-//             <option className="dropdown-item" value="22">
-//               22:00
-//             </option>
-//             <option className="dropdown-item" value="23">
-//               23:00
-//             </option>
-//             <option className="dropdown-item" value="24">
-//               24:00
-//             </option>
-//           </select>
-//         </ul>
-//       </div>
+//           <MenuItem value={8}>8:00</MenuItem>
+//           <MenuItem value={9}>9:00</MenuItem>
+//           <MenuItem value={10}>10:00</MenuItem>
+//           <MenuItem value={11}>11:00</MenuItem>
+//           <MenuItem value={12}>12:00</MenuItem>
+//           <MenuItem value={13}>13:00</MenuItem>
+//           <MenuItem value={14}>14:00</MenuItem>
+//           <MenuItem value={15}>15:00</MenuItem>
+//           <MenuItem value={16}>16:00</MenuItem>
+//           <MenuItem value={17}>17:00</MenuItem>
+//           <MenuItem value={18}>18:00</MenuItem>
+//           <MenuItem value={19}>19:00</MenuItem>
+//           <MenuItem value={20}>20:00</MenuItem>
+//           <MenuItem value={21}>21:00</MenuItem>
+//           <MenuItem value={22}>22:00</MenuItem>
+//           <MenuItem value={23}>23:00</MenuItem>
+//           <MenuItem value={0}>0:00</MenuItem>
+//           <MenuItem value={1}>1:00</MenuItem>
+//           <MenuItem value={2}>2:00</MenuItem>
+//           <MenuItem value={3}>3:00</MenuItem>
+//           <MenuItem value={4}>4:00</MenuItem>
+//           <MenuItem value={5}>5:00</MenuItem>
+//           <MenuItem value={6}>6:00</MenuItem>
+//           <MenuItem value={7}>7:00</MenuItem>
+//         </Select>
+//       </FormControl>
 //     </div>
 //   );
 // };
 
-// const UserInput: React.FC = () => {
+// const UserMap: React.FC = () => {
 //   const [currentLat, setCurrentLat] = useState("0");
 //   const [currentLng, setCurrentLng] = useState("0");
 
 //   const initMap = async () => {
 //     // Initial Location
-//     const position = { lat: -33.917347, lng: 151.2312675 };
+//     const position = { lat: 28.6139391, lng: 77.2090212 };
 
 //     // Request needed libraries.
 //     const { Map } = (await google.maps.importLibrary(
@@ -462,6 +413,7 @@
 //     const map = new Map(document.getElementById("map") as HTMLElement, {
 //       zoom: 10,
 //       center: position,
+//       disableDefaultUI: true,
 //       mapId: "DEMO_MAP_ID",
 //     });
 
@@ -510,6 +462,7 @@
 //         .geocode({ placeId: place.place_id })
 //         .then((results) => {
 //           const placeIdResult = results["results"][0]["place_id"];
+//           selectedAddress = results["results"][0]["formatted_address"];
 //           const url = `https://maps.googleapis.com/maps/api/geocode/json?place_id=${placeIdResult}&key=${
 //             import.meta.env.VITE_API_KEY
 //           }`;
@@ -553,30 +506,192 @@
 //     initMap();
 //   }, []);
 
-//   //Distance
-//   const [currentDistance, setCurrentDistance] = useState("1000");
-//   const changeDuration = (event: any) => {
-//     const sliderValue = event.target.value;
-//     setCurrentDistance(sliderValue);
-//   };
+//   useEffect(() => {
+//     console.log("uESEEFEFEFCT");
+//     userLocation.lat = currentLat;
+//     userLocation.lng = currentLng;
+//     console.log(userInputInfo);
+//   }, [currentLat, currentLng]);
 
+//   return (
+//     <div>
+//       <div className="input-group flex-nowrap">
+//         <Autocomplete>
+//           <div id="pac-container">
+//             <input
+//               id="pac-input"
+//               type="text"
+//               className="form-control"
+//               placeholder="Starting Location"
+//               aria-label="Location"
+//               aria-describedby="addon-wrapping"
+//             ></input>
+//           </div>
+//         </Autocomplete>
+//       </div>
+//       <div className="sampleMapContainer">
+//         <div id="map"></div>
+//         <div id="infowindow-content">
+//           <span id="place-name" className="title"></span>
+//           <br />
+//           <span id="place-address"></span>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// //Distance
+// const UserDistance: React.FC = () => {
+//   const [currentDistance, setCurrentDistance] = useState("0");
+
+//   function getDistance(
+//     event: Event,
+//     value: number | Array<number>,
+//     activeThumb: number
+//   ) {
+//     if (event !== null && event.target !== null) {
+//       setCurrentDistance(String(value));
+//     }
+//   }
+
+//   useEffect(() => {
+//     console.log("uESEEFEFEFCT");
+//     userInputInfo["distance"] = currentDistance;
+//     console.log(userInputInfo);
+//   }, [currentDistance]);
+
+//   const marks = [
+//     {
+//       value: 1,
+//       label: "1km",
+//     },
+//     {
+//       value: 10,
+//       label: "10km",
+//     },
+//     {
+//       value: 20,
+//       label: "20km",
+//     },
+//     {
+//       value: 30,
+//       label: "30km",
+//     },
+//     {
+//       value: 40,
+//       label: "40km",
+//     },
+//     {
+//       value: 50,
+//       label: "50km",
+//     },
+//   ];
+
+//   function valuetext(value: number) {
+//     return `${value}km`;
+//   }
+//   const color = ["#FF5733"];
+//   return (
+//     <Box sx={{ width: "100%" }}>
+//       <Slider
+//         aria-label="Custom marks"
+//         defaultValue={1}
+//         getAriaValueText={valuetext}
+//         step={2}
+//         valueLabelDisplay="auto"
+//         marks={marks}
+//         min={1}
+//         max={50}
+//         onChange={getDistance}
+//       />
+//     </Box>
+//   );
+// };
+
+// const UserTransport: React.FC = () => {
 //   // Transportation
 //   const [currentTransport, setCurrentTransport] = useState("");
 //   const changeTransport = (event: any) => {
 //     const thisTransport = event.target.value;
 //     setCurrentTransport(thisTransport);
 //   };
-
 //   useEffect(() => {
 //     console.log("uESEEFEFEFCT");
-//     userInputInfo["distance"] = currentDistance;
 //     userInputInfo["transportation"] = currentTransport;
-//     userLocation.lat = currentLat;
-//     userLocation.lng = currentLng;
-//     userDataBackend();
 //     console.log(userInputInfo);
-//   }, [currentLat, currentLng, currentDistance, currentTransport]);
+//   }, [currentTransport]);
 
+//   return (
+//     <div className="transport-btn-container">
+//       <div
+//         className="btn-group"
+//         role="group"
+//         aria-label="Basic radio toggle button group"
+//       >
+//         <input
+//           type="radio"
+//           className="btn-check"
+//           name="transportRadio"
+//           id="transportRadio1"
+//           autoComplete="off"
+//           value="private"
+//           onClick={changeTransport}
+//         ></input>
+//         <label className="btn btn-outline-primary" htmlFor="transportRadio1">
+//           <div className="transport-icon">
+//             <TwoWheelerIcon></TwoWheelerIcon>
+//             <div className="text-wrapper-2">Private</div>
+//           </div>
+//         </label>
+//       </div>
+//       <div
+//         className="btn-group"
+//         role="group"
+//         aria-label="Basic radio toggle button group"
+//       >
+//         <input
+//           type="radio"
+//           className="btn-check"
+//           name="transportRadio"
+//           id="transportRadio2"
+//           autoComplete="off"
+//           value="public"
+//           onClick={changeTransport}
+//         ></input>
+//         <label className="btn btn-outline-primary" htmlFor="transportRadio2">
+//           <div className="transport-icon-2">
+//             <DepartureBoardIcon></DepartureBoardIcon>
+//             <div className="text-wrapper-2">Public</div>
+//           </div>
+//         </label>
+//       </div>
+//       <div
+//         className="btn-group"
+//         role="group"
+//         aria-label="Basic radio toggle button group"
+//       >
+//         <input
+//           type="radio"
+//           className="btn-check"
+//           name="transportRadio"
+//           id="transportRadio3"
+//           autoComplete="off"
+//           value="walking"
+//           onClick={changeTransport}
+//         ></input>
+//         <label className="btn btn-outline-primary" htmlFor="transportRadio3">
+//           <div className="transport-icon-3">
+//             <DirectionsWalkIcon></DirectionsWalkIcon>
+//             <div className="text-wrapper-2">Walking</div>
+//           </div>
+//         </label>
+//       </div>
+//     </div>
+//   );
+// };
+
+// const UserInput: React.FC = () => {
 //   // REST for backend
 //   async function userDataBackend() {
 //     const port = "3000";
@@ -602,271 +717,57 @@
 
 //   return (
 //     <div className="user_input_container">
-//       <div className="user_input_intro_container"></div>
-//       <div>
-//         <SwipeableEdgeDrawer></SwipeableEdgeDrawer>
+//       <div className="user_input_intro_container">
+//         <h1>Your journey begins here</h1>
 //       </div>
 
-//       <div>
-//         <div className="input-group flex-nowrap">
-//           <span className="input-group-text" id="addon-wrapping">
-//             Start Location
-//           </span>
-//           <Autocomplete>
-//             <div id="pac-container">
-//               <input
-//                 id="pac-input"
-//                 type="text"
-//                 className="form-control"
-//                 placeholder="Location"
-//                 aria-label="Location"
-//                 aria-describedby="addon-wrapping"
-//               ></input>
-//             </div>
-//           </Autocomplete>
+//       <div className="user_input_form_container">
+//         <div className="userInputQuery">
+//           <div className="fromwhere-description">
+//             <p>
+//               <b>From where?</b>
+//             </p>
+//           </div>
+//           <SwipeableEdgeDrawer></SwipeableEdgeDrawer>
 //         </div>
-//         <div className="sampleMapContainer">
-//           <div id="map"></div>
-//           <div id="infowindow-content">
-//             <span id="place-name" className="title"></span>
-//             <br />
-//             <span id="place-address"></span>
+//         <div className="userInputQuery">
+//           <div className="fromwhere-description">
+//             <p>
+//               <b>Travelling time</b>
+//             </p>
+//           </div>
+//           <UserTime></UserTime>
+//         </div>
+//         <div className="userInputQuery">
+//           <div className="fromwhere-description">
+//             <p>
+//               <b>Max. distance</b>
+//             </p>
+//           </div>
+//           <div id="userDistance">
+//             <UserDistance></UserDistance>
 //           </div>
 //         </div>
-//       </div>
-
-//       <div className="budget_range_container">
-//         <label htmlFor="customRange3" className="form-label">
-//           Distance (Current{" "}
-//           <span>{Number(currentDistance) / 1000 + " km"}</span>)
-//         </label>
-//         <input
-//           type="range"
-//           className="form-range"
-//           min="1000"
-//           max="50000"
-//           step="2000"
-//           id="customRange3"
-//           onChange={changeDuration}
-//         ></input>
-//       </div>
-//       <div
-//         className="btn-group"
-//         role="group"
-//         aria-label="Basic radio toggle button group"
-//       >
-//         <input
-//           type="radio"
-//           className="btn-check"
-//           name="transportRadio"
-//           id="transportRadio1"
-//           autoComplete="off"
-//           value="private"
-//           onClick={changeTransport}
-//         ></input>
-//         <label className="btn btn-outline-primary" htmlFor="transportRadio1">
-//           <div className="transport-icon">
-//             <svg
-//               className="car-taxi"
-//               width="14"
-//               height="14"
-//               viewBox="0 0 14 14"
-//               fill="none"
-//               xmlns="http://www.w3.org/2000/svg"
-//             >
-//               <g clip-path="url(#clip0_1222_33981)">
-//                 <path
-//                   d="M7 13.5C10.5899 13.5 13.5 10.5899 13.5 7C13.5 3.41015 10.5899 0.5 7 0.5C3.41015 0.5 0.5 3.41015 0.5 7C0.5 10.5899 3.41015 13.5 7 13.5Z"
-//                   stroke="black"
-//                   stroke-linecap="round"
-//                   stroke-linejoin="round"
-//                 />
-//                 <path
-//                   d="M7 11.5C9.48528 11.5 11.5 9.48528 11.5 7C11.5 4.51472 9.48528 2.5 7 2.5C4.51472 2.5 2.5 4.51472 2.5 7C2.5 9.48528 4.51472 11.5 7 11.5Z"
-//                   stroke="black"
-//                   stroke-linecap="round"
-//                   stroke-linejoin="round"
-//                 />
-//                 <path
-//                   d="M2.60938 6H11.3896"
-//                   stroke="black"
-//                   stroke-linecap="round"
-//                   stroke-linejoin="round"
-//                 />
-//                 <path
-//                   d="M7 9L4.5 6H9.5L7 9Z"
-//                   stroke="black"
-//                   stroke-linecap="round"
-//                   stroke-linejoin="round"
-//                 />
-//                 <path
-//                   d="M7 9V11.5"
-//                   stroke="black"
-//                   stroke-linecap="round"
-//                   stroke-linejoin="round"
-//                 />
-//               </g>
-//               <defs>
-//                 <clipPath id="clip0_1222_33981">
-//                   <rect width="14" height="14" fill="white" />
-//                 </clipPath>
-//               </defs>
-//             </svg>
-
-//             <div className="text-wrapper-2">Private</div>
+//         <div className="userInputQuery">
+//           <div className="fromwhere-description">
+//             <p>
+//               <b>Budget</b>
+//             </p>
 //           </div>
-//         </label>
-//       </div>
-//       <div
-//         className="btn-group"
-//         role="group"
-//         aria-label="Basic radio toggle button group"
-//       >
-//         <input
-//           type="radio"
-//           className="btn-check"
-//           name="transportRadio"
-//           id="transportRadio2"
-//           autoComplete="off"
-//           value="public"
-//           onClick={changeTransport}
-//         ></input>
-//         <label className="btn btn-outline-primary" htmlFor="transportRadio2">
-//           <div className="transport-icon-2">
-//             <svg
-//               className="car-taxi"
-//               width="14"
-//               height="14"
-//               viewBox="0 0 14 14"
-//               fill="none"
-//               xmlns="http://www.w3.org/2000/svg"
-//             >
-//               <path
-//                 d="M11.625 11.4918H12.4271C12.9793 11.4918 13.4271 11.0441 13.4271 10.4918V7.95694C13.4271 7.40465 12.9793 6.95694 12.4271 6.95694H11.875V3.375C11.875 2.82272 11.4273 2.375 10.875 2.375H1.68457C1.13229 2.375 0.68457 2.82272 0.68457 3.375V10.6341C0.68457 11.1078 1.06856 11.4918 1.54224 11.4918H2"
-//                 stroke="black"
-//                 stroke-linecap="round"
-//                 stroke-linejoin="round"
-//               />
-//               <path
-//                 d="M11.875 4.2085H0.685364"
-//                 stroke="black"
-//                 stroke-linecap="round"
-//                 stroke-linejoin="round"
-//               />
-//               <path
-//                 d="M11.875 6.95679H0.685364"
-//                 stroke="black"
-//                 stroke-linecap="round"
-//                 stroke-linejoin="round"
-//               />
-//               <path
-//                 d="M4.46411 4.2085V6.95307"
-//                 stroke="black"
-//                 stroke-linecap="round"
-//                 stroke-linejoin="round"
-//               />
-//               <path
-//                 d="M8.03125 4.2085V6.95307"
-//                 stroke="black"
-//                 stroke-linecap="round"
-//                 stroke-linejoin="round"
-//               />
-//               <path
-//                 d="M3.39002 12.874C4.16101 12.874 4.78602 12.249 4.78602 11.478C4.78602 10.707 4.16101 10.082 3.39002 10.082C2.61903 10.082 1.99402 10.707 1.99402 11.478C1.99402 12.249 2.61903 12.874 3.39002 12.874Z"
-//                 stroke="black"
-//                 stroke-linecap="round"
-//                 stroke-linejoin="round"
-//               />
-//               <path
-//                 d="M10.23 12.874C11.001 12.874 11.626 12.249 11.626 11.478C11.626 10.707 11.001 10.082 10.23 10.082C9.45899 10.082 8.83398 10.707 8.83398 11.478C8.83398 12.249 9.45899 12.874 10.23 12.874Z"
-//                 stroke="black"
-//                 stroke-linecap="round"
-//                 stroke-linejoin="round"
-//               />
-//               <path
-//                 d="M4.78638 11.4779H6.80475H8.83398"
-//                 stroke="black"
-//                 stroke-linecap="round"
-//                 stroke-linejoin="round"
-//               />
-//             </svg>
-
-//             <div className="text-wrapper-2">Public</div>
+//           <div id="userBudget">
+//             <UserBudget></UserBudget>
 //           </div>
-//         </label>
-//       </div>
-//       <div
-//         className="btn-group"
-//         role="group"
-//         aria-label="Basic radio toggle button group"
-//       >
-//         <input
-//           type="radio"
-//           className="btn-check"
-//           name="transportRadio"
-//           id="transportRadio3"
-//           autoComplete="off"
-//           value="walking"
-//           onClick={changeTransport}
-//         ></input>
-//         <label className="btn btn-outline-primary" htmlFor="transportRadio3">
-//           <div className="transport-icon-3">
-//             <svg
-//               className="car-taxi"
-//               width="14"
-//               height="14"
-//               viewBox="0 0 14 14"
-//               fill="none"
-//               xmlns="http://www.w3.org/2000/svg"
-//             >
-//               <g clip-path="url(#clip0_1222_33722)">
-//                 <path
-//                   d="M5.21436 1.64286C5.21436 1.14975 5.6141 0.75 6.10721 0.75H12.3572C12.8503 0.75 13.2501 1.14975 13.2501 1.64286V12.3571C13.2501 12.8503 12.8503 13.25 12.3572 13.25H9.23221"
-//                   stroke="black"
-//                   stroke-linecap="round"
-//                   stroke-linejoin="round"
-//                 />
-//                 <path
-//                   d="M8.11598 7.001C8.9792 7.001 9.67898 6.30122 9.67898 5.438C9.67898 4.57478 8.9792 3.875 8.11598 3.875C7.25276 3.875 6.55298 4.57478 6.55298 5.438C6.55298 6.30122 7.25276 7.001 8.11598 7.001Z"
-//                   stroke="black"
-//                   stroke-linecap="round"
-//                   stroke-linejoin="round"
-//                 />
-//                 <path
-//                   d="M2.53564 6.10718L4.35369 6.1072C4.6189 6.1072 4.87325 6.21256 5.06078 6.40009L7.6 8.93931C7.78754 9.12685 8.04191 9.2322 8.30713 9.2322L9.6785 9.23218"
-//                   stroke="black"
-//                   stroke-linecap="round"
-//                   stroke-linejoin="round"
-//                 />
-//                 <path
-//                   d="M6.10714 7.44641L3.72146 9.83209C3.53393 10.0196 3.27957 10.125 3.01436 10.125H0.75"
-//                   stroke="black"
-//                   stroke-linecap="round"
-//                   stroke-linejoin="round"
-//                 />
-//                 <path
-//                   d="M4.32141 9.23218L5.81423 10.725C6.00177 10.9125 6.10713 11.1669 6.10713 11.4321V13.25"
-//                   stroke="black"
-//                   stroke-linecap="round"
-//                   stroke-linejoin="round"
-//                 />
-//               </g>
-//               <defs>
-//                 <clipPath id="clip0_1222_33722">
-//                   <rect width="14" height="14" fill="white" />
-//                 </clipPath>
-//               </defs>
-//             </svg>
-
-//             <div className="text-wrapper-2">Walking</div>
+//         </div>
+//         <div className="userInputQuery">
+//           <div className="fromwhere-description">
+//             <p>
+//               <b>Transportation</b>
+//             </p>
 //           </div>
-//         </label>
-//       </div>
-//       <div>
-//         <UserBudget></UserBudget>
-//       </div>
-//       <div>
-//         <UserTime></UserTime>
+//           <div id="">
+//             <UserTransport></UserTransport>
+//           </div>
+//         </div>
 //       </div>
 //     </div>
 //   );

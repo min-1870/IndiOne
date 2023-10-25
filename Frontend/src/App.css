@@ -1,6 +1,6 @@
 .user_input_container {
   width: 100%;
-  height: 100%;
+  height: 10%;
 }
 
 .mobile_top_margin {
@@ -8,10 +8,4 @@
   width: 100%;
   border: 1px solid
 
-}
-
-@media only screen and (max-width: 400px) {
-  .entire_page {
-    background-color: lightblue;
-  }
 }

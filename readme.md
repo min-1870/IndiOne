@@ -32,9 +32,12 @@ Selectable options are integrated into the system to allow users to customize th
 
   - Travel mode
   - Starting location
+
     - New swippable edge pops up
     - Search the location with _Place Autocomplete_
+
       <img src="img/starting_location.png" width="200">
+
   - Travelling time
   - Maximum distance to travel
   - Budget level

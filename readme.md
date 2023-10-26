@@ -28,14 +28,18 @@ Selectable options are integrated into the system to allow users to customize th
 
 - This is the main page where a user can input their choices of
 
+  <img src="img/main.png" width="200">
+
   - Travel mode
   - Starting location
+    - New swippable edge pops up
+    - Search the location with _Place Autocomplete_
+      <img src="img/starting_location.png" width="200">
   - Travelling time
   - Maximum distance to travel
   - Budget level
+    - This level corresponds to 'price_level' from Places API
   - Transportation mode
-
-  <img src="img/main.png" width="200">
 
 - asdf
 
@@ -129,7 +133,6 @@ Selectable options are integrated into the system to allow users to customize th
       - Locate the slide bar and choose the distance between 1 ~ 50km
     - Choose your **budget**
       - Choose a budget level between 0 and 4 ('$' is level 0)
-        - This level corresponds to 'price_level' from Places API
     - Choose your \*_transportation_ mode
     - Press 'FIND MY ITINERARY' button at the botom of the page
   - Wait until the result page is shown

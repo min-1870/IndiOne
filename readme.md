@@ -20,7 +20,23 @@ Selectable options are integrated into the system to allow users to customize th
 
 ## A Brief of the Prototype
 
+### UML
+
 <img src="img/UML.png" width="400">
+
+### Prototype sample images
+
+- This is the main page where a user can input their choices of
+  - Travel mode
+  - Starting location
+  - Travelling time
+  - Maximum distance to travel
+  - Budget level
+  - Transportation mode
+
+<img src="img/main.png" width="100">
+
+- asdf
 
 ## Tech Stack
 

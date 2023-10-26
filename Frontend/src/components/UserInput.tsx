@@ -26,6 +26,7 @@ import NavigationIcon from "@mui/icons-material/Navigation";
 import Fab from "@mui/material/Fab";
 import { useNavigate } from "react-router-dom";
 
+// User-input interface
 interface userData {
   location: location;
   distance: string;
@@ -36,11 +37,13 @@ interface userData {
   template: string;
 }
 
+// Typical lat lng format
 interface location {
   lat: string;
   lng: string;
 }
 
+// Initial user-input variable
 let userLocation: location = { lat: "", lng: "" };
 let userInputInfo: userData = {
   location: userLocation,
@@ -76,6 +79,9 @@ const Puller = styled(Box)(({ theme }) => ({
   left: "calc(50% - 15px)",
 }));
 
+// A swipeable drawer to draw a google map and a search bar
+// for a user to input the starting location
+// https://v5-0-6.mui.com/components/drawers/
 function SwipeableEdgeDrawer(props: Props) {
   const { window } = props;
   const [open, setOpen] = React.useState(false);
@@ -84,11 +90,9 @@ function SwipeableEdgeDrawer(props: Props) {
     setOpen(newOpen);
   };
 
-  // This is used only for the example
   const container =
     window !== undefined ? () => window().document.body : undefined;
 
-  // Change font size
   const updateFontSize = () => {
     const label = document.getElementById("wheretotext2");
     const barrier = document.getElementById("wheretotext");
@@ -167,6 +171,7 @@ function SwipeableEdgeDrawer(props: Props) {
   );
 }
 
+// UI for a user to select their budget level
 const UserBudget: React.FC = () => {
   const [currentBudget, setCurrentBudget] = useState("0");
 
@@ -253,9 +258,9 @@ const UserBudget: React.FC = () => {
   );
 };
 
+// UI for a user to select their travelling time
+// https://v5-0-6.mui.com/components/selects/
 const UserTime: React.FC = () => {
-  // Start & End Time
-
   const [currentStartTime, setCurrentStartTime] = useState("");
   const [currentEndTime, setCurrentEndTime] = useState("");
 
@@ -349,6 +354,8 @@ const UserTime: React.FC = () => {
   );
 };
 
+// To load a google map for a user to input their starting location
+// Uses geocoding api to retrieve lat lng of the location
 const UserMap: React.FC = () => {
   const [currentLat, setCurrentLat] = useState("0");
   const [currentLng, setCurrentLng] = useState("0");
@@ -357,7 +364,6 @@ const UserMap: React.FC = () => {
     // Initial Location
     const position = { lat: 28.6139391, lng: 77.2090212 };
 
-    // Request needed libraries.
     const { Map } = (await google.maps.importLibrary(
       "maps"
     )) as google.maps.MapsLibrary;
@@ -496,7 +502,7 @@ const UserMap: React.FC = () => {
   );
 };
 
-//Distance
+// UI for a user to select their maximum travelling distance
 const UserDistance: React.FC = () => {
   const [currentDistance, setCurrentDistance] = useState("1000");
 
@@ -562,8 +568,8 @@ const UserDistance: React.FC = () => {
   );
 };
 
+// UI for a user to select their transportation mode
 const UserTransport: React.FC = () => {
-  // Transportation
   const [currentTransport, setCurrentTransport] = useState("");
   const changeTransport = (event: any) => {
     const thisTransport = event.target.value;
@@ -642,8 +648,8 @@ const UserTransport: React.FC = () => {
   );
 };
 
+// UI for a user to select their template
 const UserTemplate: React.FC = () => {
-  // Template
   const [currentTemplate, setCurrentTemplate] = useState("");
   const changeTemplate = (event: any) => {
     const thisTemplate = event.target.value;

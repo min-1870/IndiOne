@@ -22,20 +22,23 @@ import InfoCard from "./InfoCard";
 import HomeIcon from "@mui/icons-material/Home";
 import { useNavigate } from "react-router-dom";
 
+// Typical lat lng format
 interface location {
   lat: number;
   lng: number;
 }
 
-interface waypoingLocation {
+// Typical waypoint format
+interface waypointLocation {
   location: location;
   stopover: boolean;
 }
 
+// Typical route information format to be used for DirectionService class
 interface routeInfo {
   origin: location;
   destination: location;
-  waypoints: waypoingLocation[];
+  waypoints: waypointLocation[];
   provideRouteAlternatives: boolean;
   travelMode: string;
 }
@@ -47,8 +50,9 @@ const Results: React.FC = () => {
   const userInputInfo = location.state;
 
   console.log("User Input Info");
-  console.log(userInputInfo); // Starting location : userInputInfo["location"]
+  console.log(userInputInfo);
 
+  // The entire layout for the casual template
   const CasualMap: React.FC = () => {
     const startPosition = {
       lat: Number(userInputInfo["location"].lat),
@@ -135,6 +139,7 @@ const Results: React.FC = () => {
     );
   };
 
+  // The entire layout for the local specialty template
   const LocalSpecialtyMap: React.FC = () => {
     const startPosition = {
       lat: Number(userInputInfo["location"].lat),
@@ -223,6 +228,7 @@ const Results: React.FC = () => {
     );
   };
 
+  // The entire layout for the casual template
   const QualitativeMap: React.FC = () => {
     const startPosition = {
       lat: Number(userInputInfo["location"].lat),
@@ -309,6 +315,7 @@ const Results: React.FC = () => {
     );
   };
 
+  // The entire layout for the shortest template
   const ShortestMap: React.FC = () => {
     const startPosition = {
       lat: Number(userInputInfo["location"].lat),
@@ -414,6 +421,7 @@ const Results: React.FC = () => {
     },
   ];
 
+  // A layout that renders all four map templates and descriptions of itinerary
   function TextMobileStepper() {
     const theme = useTheme();
     const [activeStep, setActiveStep] = React.useState(0);

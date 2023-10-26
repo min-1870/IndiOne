@@ -71,9 +71,9 @@ Selectable options are integrated into the system to allow users to customize th
 ### Backend
 
 - Backend framworks
-- Python Flask
+  - Python Flask
 - Database
-- Mongo DB
+  - Mongo DB
 
 ### Frontend
 
@@ -192,5 +192,5 @@ In the future, following improvements could be applied
 - Overall improved UI
   - More detailed description of each selected places
     - Sample photos
-    - Link to the offical site
+    - Link to the official site
 - Customization of Google Map - simple, yet informative

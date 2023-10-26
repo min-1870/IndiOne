@@ -123,3 +123,17 @@ Selectable options are integrated into the system to allow users to customize th
   - Press **HOME** icon at the bottom to return to the initial page
 
 ## Future Scope
+
+In the future, following improvements could be applied
+
+- Improved route recommending algorithms
+  - Apply machine-learning for users' route choices and apply it for route recommendation algorithms
+  - A feature that a user can choose unwanted places among recommended routes, and those unwanted places to be replaced by other places while maintaining the rest of the places
+- Handling user database
+  - Sign-up, login, logout features
+  - Saved user preferences
+- Overall improved UI
+  - More detailed description of each selected places
+    - Sample photos
+    - Link to the offical site
+- Customization of Google Map - simple, yet informative

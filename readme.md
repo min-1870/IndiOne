@@ -27,13 +27,15 @@ Selectable options are integrated into the system to allow users to customize th
 ### Prototype sample images
 
 - This is the main page where a user can input their choices of
+
   - Travel mode
   - Starting location
   - Travelling time
   - Maximum distance to travel
   - Budget level
   - Transportation mode
-- <img src="img/main.png" width="200">
+
+  <img src="img/main.png" width="200">
 
 - asdf
 

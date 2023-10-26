@@ -57,6 +57,14 @@ Selectable options are integrated into the system to allow users to customize th
 - #### Run Server
 
   - Run **server.py** in the **src** folder
+  - If following message appears at the bottom of the terminal, the server is ready
+    ```
+    * Serving Flask app 'IndiOneApi'
+    * Debug mode: off
+    WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+    * Running on http://127.0.0.1:5000
+    Press CTRL+C to quit
+    ```
 
 - #### Deactivate venv
   - Type `deactivate`
@@ -78,7 +86,40 @@ Selectable options are integrated into the system to allow users to customize th
     ```
 
 - Install packages
+
   - Type `npm install --legacy-peer-deps`
-  - Make sure
+  - Make sure to include `--legacy-peer-deeps`
+
+- Launch application
+  - Type `npm run dev`
+  - If your web browser does not automatically launch, locate addresses shown in the terminal
+  - For example,
+    ```
+    Local:   http://localhost:1234/
+    ```
+- Run application
+  - Choose your pereferences
+    - Choose **Travel Mode**, one of 'Solo', 'Couple', 'Friends' or 'Family'
+    - Choose your starting location
+      - Locate **From where?** and click/tap the search bar
+      - A new swippable edge is shown. Click/tap 'Starting Location' bar and input your starting location
+      - Close the swippable edge
+    - Choose your **travelling time**
+      - Pick your start and finish times
+        - Finish time shall not be earlier than starting time
+        - Start time + finish time cannot be more than 24 hours
+    - Choose **maxium distance** you would like to travel
+      - Locate the slide bar and choose the distance between 1 ~ 50km
+    - Choose your **budget**
+      - Choose a budget level between 0 and 4 ('$' is level 0)
+        - This level corresponds to 'price_level' from Places API
+    - Choose your \*_transportation_ mode
+    - Press 'FIND MY ITINERARY' button at the botom of the page
+  - Wait until the result page is shown
+- View results
+  - Once the result page is loaded, it shows four different routes based on the themes of **casual**, **Local Specialty**, **Qualitative** and **Shortest**
+    - A user can navigate with **BACK** or **NEXT** buttons at the bototm of the page
+  - A user can open or close a description card below the map to view detailed information of each itinerary
+  - Press **HOME** icon at the bottom to return to the initial page
 
 ## Future Scope

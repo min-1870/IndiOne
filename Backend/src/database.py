@@ -30,4 +30,7 @@ try:
     PLACES_COLLECTION = USERS_DATABASE.get_collection("temp-places")
     print("Pinged your deployment. You successfully connected to MongoDB!")
 except Exception as e:
-    print(e)
+    print("=========================================================================")
+    print("Failed ot connect the DB.")
+    print("Without the connection of DB will not affect the algorithm. Do not worry!")
+    print("=========================================================================")

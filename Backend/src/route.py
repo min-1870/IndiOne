@@ -256,7 +256,7 @@ def getNextPlace(userInput, route, currentTime, places, requireTypes, avoidTypes
             if newTotalScore > score['total']:
                 score = {
                     'total': newTotalScore,
-                    'distance': distanceScore,
+                    'distance': distance,
                     'rating': ratingScore,
                     'user_ratings_total': user_ratings_totalScore,
                 }
@@ -347,7 +347,10 @@ def generateRoute(userInput, places, oldRoute=[]):
     #Calculate Scores AVG * TYPES
     typeBonus = len(set([place['type'] for place in route]))/20 * 100
     for key in score.keys():
-        score[key] = sum(score[key]) / len(score[key]) + typeBonus
+        if key == "distance":
+            score[key] = sum(score[key])
+        else:
+            score[key] = sum(score[key]) / len(score[key]) + typeBonus
     return {'score': score, 'route': route}
 
 
@@ -368,7 +371,7 @@ def categorizeRoutes(routes):
             categorizedRoutes[key] = sorted(categorizedRoutes[key], reverse=True, key=lambda route: route['score']['total'])
             
         elif key == 'shortest':
-            categorizedRoutes[key] = sorted(categorizedRoutes[key], reverse=True, key=lambda route: route['score']['distance'])
+            categorizedRoutes[key] = sorted(categorizedRoutes[key], reverse=False, key=lambda route: route['score']['distance'])
             
         elif key == 'qualitative':
             categorizedRoutes[key] = sorted(categorizedRoutes[key], reverse=True, key=lambda route: route['score']['rating'])
@@ -584,7 +587,7 @@ userInput = {
     'template':'friends',
 }
 
-
+# testing backend generating route api ==========================================
 
 # categorizedRoutes = generateRoutes(userInput)
 
@@ -607,6 +610,10 @@ userInput = {
 #                         print(place['type'], place['rating'], place['place_id'], ' - ', place['name'])
 # else:
 #     print('nothing to return')
+
+
+# testing backend updating route api ==========================================
+
 
 #652d3f6c6049fe789974d5b6
 # with open(database.directory('sample_route.json'), 'r') as f:

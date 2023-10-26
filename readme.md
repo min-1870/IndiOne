@@ -20,29 +20,32 @@ Selectable options are integrated into the system to allow users to customize th
 
 ## A Brief of the Prototype
 
-fasdf
+![Alt text](img/UML.png)
 
-# Backend
+## Tech Stack
 
-### Create and activate Venv
+### Backend
 
-1.Move to **Backend** folder in your terminal
+### Frontend
 
-2.Type `python -m venv BackendVenv` (for mac: `python3 -m venv BackendVenv`)
+## Instructions
 
-3.Type `./BackendVenv/Scripts/Activate` (for mac: `source BackendVenv/bin/activate`)
+### Backend
 
-4.Select the **python.exe** in the **BackendVenv/Scripts** folder as interpretor of VSC (for mac: **python.exe** is in the **BackendVenv/bin** folder)
+- #### Create and activate Venv
 
-### Install packages
+  - Move to **Backend** folder in your terminal
+  - Type `python -m venv BackendVenv` (for mac: `python3 -m venv BackendVenv`)
+  - Type `./BackendVenv/Scripts/Activate` (for mac: `source BackendVenv/bin/activate`)
+  - Select the **python.exe** in the **BackendVenv/Scripts** folder as interpretor of VSC (for mac: **python.exe** is in the **BackendVenv/bin** folder)
 
-1.Type `pip install -r requirements.txt`
+- #### Install packages
 
-### Input API key
+  - Type `pip install -r requirements.txt`
 
-1.Create a json file call **keys.json**
-
-2.Paste your api key in the file
+- #### Input API key
+  - Create a json file call **keys.json**
+  - Paste your api key in the file
 
 ```
 {
@@ -51,14 +54,13 @@ fasdf
 }
 ```
 
-### Run Server
+- #### Run Server
 
-1.Run **server.py** in the **src** folder
+  - Run **server.py** in the **src** folder
 
-### Deactivate venv
+- #### Deactivate venv
+  - Type `deactivate`
 
-1.Type `deactivate`
+### Frontend
 
----
-
-# Frontend
+asdfad

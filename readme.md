@@ -70,7 +70,18 @@ Selectable options are integrated into the system to allow users to customize th
 
 ### Backend
 
+minseok
+
 ### Frontend
+
+- UI
+  - JavaScript, HTML, CSS
+- Frontend frameworks
+  - React.js
+- Styling
+  - Bootstrap, MUI
+- Web application frameworks
+  - Node.js
 
 ## Instructions
 

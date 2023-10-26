@@ -33,8 +33,7 @@ Selectable options are integrated into the system to allow users to customize th
   - Maximum distance to travel
   - Budget level
   - Transportation mode
-
-<img src="img/main.png" width="200">
+- <img src="img/main.png" width="200">
 
 - asdf
 

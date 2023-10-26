@@ -33,7 +33,7 @@ Selectable options are integrated into the system to allow users to customize th
   - Travel mode
   - Starting location
 
-    - New swippable edge pops up
+    - New swipeable edge pops up
     - Search the location with _Place Autocomplete_
 
       <img src="img/starting_location.png" width="200">
@@ -71,9 +71,9 @@ Selectable options are integrated into the system to allow users to customize th
 ### Backend
 
 - Backend framworks
- - Python Flask 
+- Python Flask
 - Database
- - Mongo DB
+- Mongo DB
 
 ### Frontend
 
@@ -146,7 +146,7 @@ Selectable options are integrated into the system to allow users to customize th
 - Install packages
 
   - Type `npm install --legacy-peer-deps`
-  - Make sure to include `--legacy-peer-deeps`
+  - Make sure to include `--legacy-peer-deps`
 
 - Launch application
   - Type `npm run dev`
@@ -160,8 +160,8 @@ Selectable options are integrated into the system to allow users to customize th
     - Choose **Travel Mode**, one of 'Solo', 'Couple', 'Friends' or 'Family'
     - Choose your starting location
       - Locate **From where?** and click/tap the search bar
-      - A new swippable edge is shown. Click/tap 'Starting Location' bar and input your starting location
-      - Close the swippable edge
+      - A new swipeable edge is shown. Click/tap 'Starting Location' bar and input your starting location
+      - Close the swipeable edge
     - Choose your **travelling time**
       - Pick your start and finish times
         - Finish time shall not be earlier than starting time

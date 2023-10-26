@@ -56,10 +56,10 @@ Selectable options are integrated into the system to allow users to customize th
 
     <img src="img/results_sample.png" width="200">
 
-    - **Casual** - Minseok
-    - **Local Specialty** - Minseok
-    - **Qualitative** - Minseok
-    - **Shortest** - Minseok
+    - **Casual** - the route has the highest score in overal.
+    - **Local Specialty** - the route include the tourist spot.
+    - **Qualitative** - the route has the highest rating of the places.
+    - **Shortest** - the route has minimum moving range.
 
   - A user can navigate recommended routes of different themes with the **BACK** and **NEXT** buttons at the bottom
   - A user can open each itinerary card to view detailed descriptions
@@ -70,7 +70,10 @@ Selectable options are integrated into the system to allow users to customize th
 
 ### Backend
 
-minseok
+- Backend framworks
+ - Python Flask 
+- Database
+ - Mongo DB
 
 ### Frontend
 

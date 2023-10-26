@@ -44,15 +44,15 @@ Selectable options are integrated into the system to allow users to customize th
   - Type `pip install -r requirements.txt`
 
 - #### Input API key
+
   - Create a json file call **keys.json**
   - Paste your api key in the file
-
-```
-{
-    "googleApi": "GOOGLE API KEY",
-    "databaseUrl": "MONGO DB API KEY"
-}
-```
+    ```
+    {
+      "googleApi": "GOOGLE API KEY",
+      "databaseUrl": "MONGO DB API KEY"
+    }
+    ```
 
 - #### Run Server
 
@@ -63,4 +63,22 @@ Selectable options are integrated into the system to allow users to customize th
 
 ### Frontend
 
-asdfad
+- Manage API
+
+  - Locate 'Frontend' folder
+    - `cd Frontend`
+  - Create **.env** file
+  - In **.env** file, insert the following line, with "YOUR_API_KEY" replaced by your API
+    ```
+    VITE_API_KEY=YOUR_API_KEY
+    ```
+  - For example,
+    ```
+    VITE_API_KEY=A1B2C3D4E5F6G7
+    ```
+
+- Install packages
+  - Type `npm install --legacy-peer-deps`
+  - Make sure
+
+## Future Scope

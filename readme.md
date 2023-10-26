@@ -50,7 +50,21 @@ Selectable options are integrated into the system to allow users to customize th
 
     <img src="img/searching.png" width="200">
 
-- asdf
+- Results
+
+  - Recommended routes with four different themes - **casual**, **local specialty**, **qualitative** and **shortest** - are shown
+
+    <img src="img/results_sample.png" width="200">
+
+    - **Casual** - Minseok
+    - **Local Specialty** - Minseok
+    - **Qualitative** - Minseok
+    - **Shortest** - Minseok
+
+  - A user can navigate recommended routes of different themes with the **BACK** and **NEXT** buttons at the bottom
+  - A user can open each itinerary card to view detailed descriptions
+
+    <img src="img/results_places_description.png" width="200">
 
 ## Tech Stack
 

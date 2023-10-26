@@ -34,7 +34,7 @@ Selectable options are integrated into the system to allow users to customize th
   - Budget level
   - Transportation mode
 
-<img src="img/main.png" width="100">
+<img src="img/main.png" width="200">
 
 - asdf
 

@@ -20,7 +20,7 @@ Selectable options are integrated into the system to allow users to customize th
 
 ## A Brief of the Prototype
 
-![Alt text](img/UML.png)
+<img src="img/UML.png" width="400">
 
 ## Tech Stack
 

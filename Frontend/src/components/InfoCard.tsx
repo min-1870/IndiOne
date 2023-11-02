@@ -5,6 +5,7 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import "./InfoCard.css";
+import Rating from "@mui/material/Rating";
 
 const InfoCard: React.FC = (props) => {
   let startHour = Math.floor(props.data["startTime"]);
@@ -79,9 +80,14 @@ const InfoCard: React.FC = (props) => {
               <br></br>
               <b>Type</b>: {props.data["type"]}
               <br></br>
-              <b>Rating</b>: Average {props.data["rating"]} with total{" "}
-              {props.data["user_ratings_total"]} ratings
-              <br></br>
+              <div className="rating-container">
+                <b>Rating</b>:{" "}
+                <Rating
+                  name="read-only"
+                  value={props.data["rating"]}
+                  readOnly
+                />
+              </div>
             </Typography>
           </AccordionDetails>
         </Accordion>
@@ -143,9 +149,14 @@ const InfoCard: React.FC = (props) => {
               <br></br>
               <b>Type</b>: {props.data["type"]}
               <br></br>
-              <b>Rating</b>: Average {props.data["rating"]} with total{" "}
-              {props.data["user_ratings_total"]} ratings
-              <br></br>
+              <div className="rating-container">
+                <b>Rating</b>:{" "}
+                <Rating
+                  name="read-only"
+                  value={props.data["rating"]}
+                  readOnly
+                />{" "}
+              </div>
             </Typography>
           </AccordionDetails>
         </Accordion>

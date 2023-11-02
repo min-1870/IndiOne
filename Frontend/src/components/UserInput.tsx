@@ -477,21 +477,26 @@ const UserMap: React.FC = () => {
   return (
     <div>
       <div className="input-group flex-nowrap">
-        <Autocomplete>
-          <div id="pac-container">
-            <input
-              id="pac-input"
-              type="text"
-              className="form-control"
-              placeholder="Starting Location"
-              aria-label="Location"
-              aria-describedby="addon-wrapping"
-            ></input>
-          </div>
-        </Autocomplete>
+        <div className="autocomplete-container">
+          <Autocomplete>
+            <div id="pac-container">
+              <input
+                id="pac-input"
+                type="text"
+                className="form-control"
+                placeholder="Starting Location"
+                aria-label="Location"
+                aria-describedby="addon-wrapping"
+              ></input>
+            </div>
+          </Autocomplete>
+        </div>
       </div>
       <div className="sampleMapContainer">
-        <div id="map"></div>
+        <div className="map-container">
+          <div id="map"></div>
+        </div>
+
         <div id="infowindow-content">
           <span id="place-name" className="title"></span>
           <br />

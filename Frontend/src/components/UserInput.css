@@ -130,115 +130,127 @@
  .sampleMapContainer {
     height: 100%;
     width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
  }
  
+ .map-container {
+  width: 90%;
+ }
  
-  html,
-  body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    background-color: rgb(244, 242, 241);
-  }
-  
-  #description {
-    font-family: Roboto;
-    font-size: 15px;
-    font-weight: 300;
-  }
-  
-  #infowindow-content .title {
-    font-weight: bold;
-  }
-  
-  #infowindow-content {
-    display: none;
-  }
-  
-  /* Media Query required */
-  #map {
-    border: 1px solid #000;
-    background: white;
-    width: 100%;
-    height: 500px;
-  }
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: rgb(244, 242, 241);
+}
 
-  
-  #map #infowindow-content {
-    display: inline;
-  }
-  
-  .pac-card {
-    background-color: #fff;
-    border: 0;
-    border-radius: 2px;
-    box-shadow: 0 1px 4px -1px rgba(0, 0, 0, 0.3);
-    margin: 10px;
-    padding: 0 0.5em;
-    font: 400 18px Roboto, Arial, sans-serif;
-    font-family: Roboto;
-    padding: 0;
-  }
-  
-  .pac-container {
-    z-index: 2000;
-  }
-  #pac-container {
-    padding-bottom: 12px;
-    margin-right: 12px;
-  }
-  
-  .pac-controls {
-    display: inline-block;
-    padding: 5px 11px;
-  }
-  
-  .pac-controls label {
-    font-family: Roboto;
-    font-size: 13px;
-    font-weight: 300;
-  }
-  
-  #pac-input {
-    background-color: #fff;
-    font-family: Roboto;
-    font-size: 15px;
-    font-weight: 300;
-    margin-left: 12px;
-    padding: 0 11px 0 13px;
-    text-overflow: ellipsis;
-    width: 400px;
-  }
-  
-  #pac-input:focus {
-    border-color: #4d90fe;
-  }
-  
-  #title {
-    color: #fff;
-    background-color: #4d90fe;
-    font-size: 25px;
-    font-weight: 500;
-    padding: 6px 12px;
-  }
+#description {
+  font-family: Roboto;
+  font-size: 15px;
+  font-weight: 300;
+}
 
-  /*
-  Start & End Time
-  */
+#infowindow-content .title {
+  font-weight: bold;
+}
 
-  .dateContainer {
-    display:flex;
-    justify-content:space-evenly;
-    align-items:center;
-    width:100%;
-    padding: 0px 10%;
+#infowindow-content {
+  display: none;
+}
+
+/* Media Query required */
+#map {
+  border: 1px solid #000;
+  background: white;
+  width: 100%;
+  height: 500px;
+}
+
+
+#map #infowindow-content {
+  display: inline;
+}
+
+.pac-card {
+  background-color: #fff;
+  border: 0;
+  border-radius: 2px;
+  box-shadow: 0 1px 4px -1px rgba(0, 0, 0, 0.3);
+  margin: 10px;
+  padding: 0 0.5em;
+  font: 400 18px Roboto, Arial, sans-serif;
+  font-family: Roboto;
+  padding: 0;
+}
+
+.pac-container {
+  z-index: 2000;
+}
+
+#pac-container {
+  margin-bottom: 12px;
+  z-index: 2000;
+}
+
+.pac-controls {
+  display: inline-block;
+  padding: 5px 11px;
+}
+
+.pac-controls label {
+  font-family: Roboto;
+  font-size: 13px;
+  font-weight: 300;
+}
+
+#pac-input {
+  background-color: #fff;
+  font-family: Roboto;
+  font-size: 15px;
+  font-weight: 300;
+  margin-left: 12px;
+  padding: 0 11px 0 13px;
+  text-overflow: ellipsis;
+  box-shadow: 0px 0px 10px 0px #888888;
+}
+
+#pac-input:focus {
+  border-color: #4d90fe;
+}
+
+#title {
+  color: #fff;
+  background-color: #4d90fe;
+  font-size: 25px;
+  font-weight: 500;
+  padding: 6px 12px;
+}
+
+.dateContainer {
+  display:flex;
+  justify-content:space-evenly;
+  align-items:center;
+  width:100%;
+  padding: 0px 10%;
 }
 
 #eachButton {
-    width:120px;
+  width:120px;
 }
 
+.input-group {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-right: 8%;
+}
 
+.autocomplete-container {
+  width: 80%;
+}
 /* TRANSPORTATION */ 
 
 .transportation {
@@ -247,8 +259,8 @@
   flex-direction: column;
   gap: 3px;
   position: relative;
- }
- .transportation .text-wrapper {
+}
+.transportation .text-wrapper {
   color: #000000;
   font-family: "Inter-Bold", Helvetica;
   font-size: 15px;
@@ -260,8 +272,9 @@
   position: relative;
   text-align: center;
   width: 150px;
- }
- .transportation .div {
+}
+
+.transportation .div {
   align-items: center;
   background-color: #ffffff;
   display: flex;
@@ -270,9 +283,9 @@
   padding: 10px 30px;
   position: relative;
   width: 394px;
- }
+}
  
- .transportation .transport-icon {
+.transportation .transport-icon {
   align-items: center;
   background-color: #f8f8f8;
   border-radius: 5px;
@@ -286,15 +299,16 @@
   padding: 8px 10px;
   position: relative;
   width: 112px;
- }
- .transportation .car-taxi {
+}
+
+.transportation .car-taxi {
   height: 72.5px;
   margin-top: -8px;
   position: relative;
   width: 73px;
- }
+}
 
- .transportation .text-wrapper-2 {
+.transportation .text-wrapper-2 {
   align-self: stretch;
   color: #000000;
   font-family: "Inter-Bold", Helvetica;
@@ -306,19 +320,20 @@
   margin-bottom: -8px;
   position: relative;
   text-align: center;
- }
- .transportation .space-line {
+}
+
+.transportation .space-line {
   align-items: flex-start;
   display: inline-flex;
   flex: 0 0 auto;
   gap: 10px;
   position: relative;
- }
- .transportation .rectangle {
+}
+.transportation .rectangle {
   height: 86px;
   position: relative;
   width: 19px;
- }
+}
 
  .transportation .line {
   height: 78px;
@@ -328,7 +343,8 @@
   top: 4px;
   width: 1px;
  }
- .transportation .transport-icon-2 {
+
+.transportation .transport-icon-2 {
   align-items: center;
   background-color: #f8f8f8;
   border-radius: 5px;
@@ -342,15 +358,16 @@
   padding: 8px 10px;
   position: relative;
   width: 113px;
- }
- .transportation .img {
+}
+
+.transportation .img {
   height: 73px;
   margin-top: -8px;
   position: relative;
   width: 74px;
  }
 
- .transportation .transport-icon-3 {
+.transportation .transport-icon-3 {
   align-items: center;
   background-color: #f8f8f8;
   border-radius: 5px;
@@ -364,29 +381,30 @@
   padding: 8px 10px;
   position: relative;
   width: 111px;
- }
+}
 
- .space-line {
+.space-line {
   align-items: flex-start;
   display: inline-flex;
   gap: 10px;
   position: relative;
- }
- .space-line .rectangle {
+}
+.space-line .rectangle {
   height: 86px;
   position: relative;
   width: 19px;
- }
- .space-line .line {
+}
+.space-line .line {
   height: 78px;
   left: 9px;
   object-fit: cover;
   position: absolute;
   top: 4px;
   width: 1px;
- }
+}
 
- @media only screen and (max-width: 1280px) {
+
+@media only screen and (max-width: 1280px) {
   .user_input_form_container {
     height: 1050px;
   }
@@ -483,7 +501,7 @@
 
 @media only screen and (max-width: 400px) {
   .user_input_form_container {
-    height: 775px;
+    height: 760px;
   }
 }
 

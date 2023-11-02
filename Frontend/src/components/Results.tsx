@@ -98,7 +98,7 @@ const Results: React.FC = () => {
       const results = await directionsService.route(casualRouteInfo);
       setDirectionsResponse(results);
       // console.log("Casual Data is");
-      // console.log(casualData);
+      console.log(casualData);
     }
     useEffect(() => {
       getRoute();

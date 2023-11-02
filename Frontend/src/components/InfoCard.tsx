@@ -52,47 +52,6 @@ const InfoCard: React.FC = (props) => {
         </Accordion>
       </div>
     );
-  } else if (props.index === props.lastIndex - 1) {
-    return (
-      <div className="infocard-container">
-        <Accordion>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1a-content"
-            id="panel1a-header"
-            style={{
-              backgroundColor: "#669fd8",
-              color: "white",
-              fontWeight: "bold",
-            }}
-          >
-            <Typography>
-              ({alphabet}) {props.data["name"]}
-            </Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Typography>
-              <b>Name</b>: {props.data["name"]}
-              <br></br>
-              <b>Time</b>: {startHour}:
-              {startMinute < 10 ? "0" + startMinute : startMinute} ~ {endHour}:
-              {endMinute < 10 ? "0" + endMinute : endMinute}
-              <br></br>
-              <b>Type</b>: {props.data["type"]}
-              <br></br>
-              <div className="rating-container">
-                <b>Rating</b>:{" "}
-                <Rating
-                  name="read-only"
-                  value={props.data["rating"]}
-                  readOnly
-                />
-              </div>
-            </Typography>
-          </AccordionDetails>
-        </Accordion>
-      </div>
-    );
   } else if (props.index % 2 === 0) {
     return (
       <div className="infocard-container">
@@ -136,7 +95,9 @@ const InfoCard: React.FC = (props) => {
             }}
           >
             <Typography>
-              ({alphabet}) {props.data["name"]}
+              ({alphabet}){" "}
+              <img src={props.data["icon"]} style={{ maxHeight: "20px" }}></img>{" "}
+              {props.data["name"]}
             </Typography>
           </AccordionSummary>
           <AccordionDetails>
@@ -146,8 +107,6 @@ const InfoCard: React.FC = (props) => {
               <b>Time</b>: {startHour}:
               {startMinute < 10 ? "0" + startMinute : startMinute} ~ {endHour}:
               {endMinute < 10 ? "0" + endMinute : endMinute}
-              <br></br>
-              <b>Type</b>: {props.data["type"]}
               <br></br>
               <div className="rating-container">
                 <b>Rating</b>:{" "}

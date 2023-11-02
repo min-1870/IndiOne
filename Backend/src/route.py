@@ -173,7 +173,7 @@ def converUserInputTypes(userInput):
 def getNextPlace(userInput, route, currentTime, places, requireTypes, avoidTypes):
     
     MAX = MAXIMUM_DISTANCE[userInput['transportation']]
-    result = None
+    
     
     score = {
         'total':0,
@@ -352,6 +352,13 @@ def generateRoute(userInput, places, oldRoute=[]):
             score[key] = sum(score[key])
         else:
             score[key] = sum(score[key]) / len(score[key]) + typeScore
+
+    routeId = ''
+    for place in route:
+        if place['type'] != 'travel':
+            routeId += place['place_id']
+    score['routeId'] = routeId
+    
     return {'score': copy.deepcopy(score), 'route': copy.deepcopy(route)}
 
 
@@ -446,11 +453,13 @@ def generateRoutes(userInput):
 
     #Check the feasibility of the routes
     passedCategories = []
+    passedRoutes = []
     for i in range(len(routes)):
         if i % 10 == 0: print(i)
         for key in categorizedRoutes:
             if not key in passedCategories:
-                if feasibilityRoute(categorizedRoutes[key][i]['route'], places):
+                if feasibilityRoute(categorizedRoutes[key][i]['route'], places) and not (categorizedRoutes[key][i]['score']['routeId'] in passedRoutes):
+                    passedRoutes.append(categorizedRoutes[key][i]['score']['routeId'])
                     categorizedRoutes[key] = categorizedRoutes[key][i]['route']
                     passedCategories.append(key)
 
@@ -594,9 +603,9 @@ sydney = {'lat':'-33.867298', 'lng':'151.209154'}
 hcmc  = {'lat':"10.777981", 'lng':"106.694449"}
 userInput = {
     'location': sydney,
-    'distance': "1000",
-    'time': "09",
-    'duration': "13",
+    'distance': "3000",
+    'time': "10",
+    'duration': "4",
     'transportation': 'public',
     'budget': "2",
     'template':'friends',

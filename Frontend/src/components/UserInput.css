@@ -31,6 +31,11 @@
   padding: 2% 5% 2% 5%;
 }
 
+.userInputQuery hr{
+  margin-bottom: 0px;
+  color: rgb(7, 89, 128);
+}
+
 .fromWhere-searchbar {
   background-color: #ffffff;
   border: solid 1px rgb(44, 140, 229);
@@ -383,13 +388,13 @@
 
  @media only screen and (max-width: 1280px) {
   .user_input_form_container {
-    height: 950px;
+    height: 1050px;
   }
 }
 
  @media only screen and (max-width: 1120px) {
   .user_input_form_container {
-    height: 900px;
+    height: 1000px;
   }
 }
 
@@ -401,96 +406,96 @@
 
 @media only screen and (max-width: 960px) {
   .user_input_form_container {
-    height: 860px;
+    height: 960px;
   }
 }
 
 @media only screen and (max-width: 900px) {
   .user_input_form_container {
-    height: 840px;
+    height: 940px;
   }
 }
 
 @media only screen and (max-width: 870px) {
   .user_input_form_container {
-    height: 820px;
+    height: 920px;
   }
 }
 
 @media only screen and (max-width: 820px) {
   .user_input_form_container {
-    height: 810px;
+    height: 910px;
   }
 }
 
 @media only screen and (max-width: 770px) {
   .user_input_form_container {
-    height: 790px;
+    height: 890px;
   }
 }
 
 @media only screen and (max-width: 720px) {
   .user_input_form_container {
-    height: 790px;
+    height: 880px;
   }
 }
 
 @media only screen and (max-width: 680px) {
   .user_input_form_container {
-    height: 780px;
+    height: 860px;
   }
 }
 
 @media only screen and (max-width: 650px) {
   .user_input_form_container {
-    height: 770px;
+    height: 860px;
   }
 }
 
 @media only screen and (max-width: 620px) {
   .user_input_form_container {
-    height: 760px;
+    height: 850px;
   }
 }
 
 @media only screen and (max-width: 580px) {
   .user_input_form_container {
-    height: 740px;
+    height: 840px;
   }
 }
 
 @media only screen and (max-width: 520px) {
   .user_input_form_container {
-    height: 720px;
+    height: 820px;
   }
 }
 
 @media only screen and (max-width: 460px) {
   .user_input_form_container {
-    height: 710px;
+    height: 800px;
   }
 }
 @media only screen and (max-width: 430px) {
   .user_input_form_container {
-    height: 680px;
+    height: 790px;
   }
 }
 
 @media only screen and (max-width: 400px) {
   .user_input_form_container {
-    height: 675px;
+    height: 775px;
   }
 }
 
 @media only screen and (max-width: 370px) {
   .user_input_form_container {
-    height: 665px;
+    height: 770px;
   }
 }
 
 @media only screen and (max-width: 320px) {
   .user_input_form_container {
-    height: 655px;
+    height: 755px;
   }
   .user_input_intro_container h1{
     font-size: 20px;

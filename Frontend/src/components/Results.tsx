@@ -88,7 +88,7 @@ const Results: React.FC = () => {
     } else if (travelMode === "private") {
       casualRouteInfo["travelMode"] = "DRIVING";
     } else {
-      casualRouteInfo["travelMode"] = "DRIVING";
+      casualRouteInfo["travelMode"] = "TRANSIT";
     }
 
     let temp: any = null;

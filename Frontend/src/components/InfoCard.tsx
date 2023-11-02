@@ -24,7 +24,9 @@ const InfoCard: React.FC = (props) => {
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-            <b>Time</b>: {startHour}:{startMinute} ~ {endHour}:{endMinute}
+            <b>Time</b>: {startHour}:
+            {startMinute < 10 ? "0" + startMinute : startMinute} ~ {endHour}:
+            {endMinute < 10 ? "0" + endMinute : endMinute}
             <br></br>
             <b>Task</b>: Head to Location B
           </Typography>
@@ -45,7 +47,9 @@ const InfoCard: React.FC = (props) => {
           <Typography>
             <b>Name</b>: {props.data["name"]}
             <br></br>
-            <b>Time</b>: {startHour}:{startMinute} ~ {endHour}:{endMinute}
+            <b>Time</b>: {startHour}:
+            {startMinute < 10 ? "0" + startMinute : startMinute} ~ {endHour}:
+            {endMinute < 10 ? "0" + endMinute : endMinute}
             <br></br>
             <b>Type</b>: {props.data["type"]}
             <br></br>
@@ -68,7 +72,9 @@ const InfoCard: React.FC = (props) => {
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-            <b>Time</b>: {startHour}:{startMinute} ~ {endHour}:{endMinute}
+            <b>Time</b>: {startHour}:
+            {startMinute < 10 ? "0" + startMinute : startMinute} ~ {endHour}:
+            {endMinute < 10 ? "0" + endMinute : endMinute}
             <br></br>
             <b>Task</b>: Head to Location {alphabet}
           </Typography>
@@ -91,7 +97,9 @@ const InfoCard: React.FC = (props) => {
           <Typography>
             <b>Name</b>: {props.data["name"]}
             <br></br>
-            <b>Time</b>: {startHour}:{startMinute} ~ {endHour}:{endMinute}
+            <b>Time</b>: {startHour}:
+            {startMinute < 10 ? "0" + startMinute : startMinute} ~ {endHour}:
+            {endMinute < 10 ? "0" + endMinute : endMinute}
             <br></br>
             <b>Type</b>: {props.data["type"]}
             <br></br>

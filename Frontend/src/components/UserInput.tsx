@@ -780,6 +780,7 @@ const UserInput: React.FC = () => {
           <div>
             <UserTemplate></UserTemplate>
           </div>
+          <hr></hr>
         </div>
         <div className="userInputQuery">
           <div className="fromwhere-description">
@@ -787,7 +788,10 @@ const UserInput: React.FC = () => {
               <b>From where?</b>
             </p>
           </div>
-          <SwipeableEdgeDrawer></SwipeableEdgeDrawer>
+          <div>
+            <SwipeableEdgeDrawer></SwipeableEdgeDrawer>
+          </div>
+          <hr></hr>
         </div>
         <div className="userInputQuery">
           <div className="fromwhere-description">
@@ -795,7 +799,10 @@ const UserInput: React.FC = () => {
               <b>Travelling time</b>
             </p>
           </div>
-          <UserTime></UserTime>
+          <div>
+            <UserTime></UserTime>
+          </div>
+          <hr></hr>
         </div>
         <div className="userInputQuery">
           <div className="fromwhere-description">
@@ -806,6 +813,7 @@ const UserInput: React.FC = () => {
           <div id="userDistance">
             <UserDistance></UserDistance>
           </div>
+          <hr></hr>
         </div>
         <div className="userInputQuery">
           <div className="fromwhere-description">
@@ -816,6 +824,7 @@ const UserInput: React.FC = () => {
           <div id="userBudget">
             <UserBudget></UserBudget>
           </div>
+          <hr></hr>
         </div>
         <div className="userInputQuery">
           <div className="fromwhere-description">
@@ -831,7 +840,7 @@ const UserInput: React.FC = () => {
           <Box sx={{ "& > :not(style)": { m: 1 } }}>
             <Fab variant="extended" color="primary" onClick={sendUserInput}>
               <NavigationIcon sx={{ mr: 1 }} />
-              Find my itinerary
+              <div style={{ marginRight: "10px" }}>Explore</div>
             </Fab>
           </Box>
         </div>

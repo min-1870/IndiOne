@@ -13,6 +13,16 @@ const InfoCard: React.FC = (props) => {
   let endMinute = Math.ceil(60 * (props.data["endTime"] - endHour));
   let alphabet = String.fromCharCode(65 + Math.floor(props.index / 2) + 1);
 
+  if (startMinute == 60) {
+    startHour++;
+    startMinute = 0;
+  }
+
+  if (endMinute == 60) {
+    endHour++;
+    endMinute = 0;
+  }
+
   if (props.index === 0) {
     return (
       <div className="infocard-container">
@@ -21,7 +31,11 @@ const InfoCard: React.FC = (props) => {
             expandIcon={<ExpandMoreIcon />}
             aria-controls="panel1a-content"
             id="panel1a-header"
-            style={{ backgroundColor: "#f0f0f0", color: "black" }}
+            style={{
+              backgroundColor: "#669fd8",
+              color: "white",
+              fontWeight: "bold",
+            }}
           >
             <Typography>(A) Start your journey!</Typography>
           </AccordionSummary>
@@ -45,9 +59,15 @@ const InfoCard: React.FC = (props) => {
             expandIcon={<ExpandMoreIcon />}
             aria-controls="panel1a-content"
             id="panel1a-header"
-            style={{ backgroundColor: "#f0f0f0", color: "black" }}
+            style={{
+              backgroundColor: "#669fd8",
+              color: "white",
+              fontWeight: "bold",
+            }}
           >
-            <Typography>({alphabet}) End your journey!</Typography>
+            <Typography>
+              ({alphabet}) {props.data["name"]}
+            </Typography>
           </AccordionSummary>
           <AccordionDetails>
             <Typography>
@@ -75,7 +95,11 @@ const InfoCard: React.FC = (props) => {
             expandIcon={<ExpandMoreIcon />}
             aria-controls="panel1a-content"
             id="panel1a-header"
-            style={{ backgroundColor: "#f0f0f0", color: "black" }}
+            style={{
+              backgroundColor: "#669fd8",
+              color: "white",
+              fontWeight: "bold",
+            }}
           >
             <Typography>Travel to {alphabet}</Typography>
           </AccordionSummary>
@@ -99,7 +123,11 @@ const InfoCard: React.FC = (props) => {
             expandIcon={<ExpandMoreIcon />}
             aria-controls="panel1a-content"
             id="panel1a-header"
-            style={{ backgroundColor: "#f0f0f0", color: "black" }}
+            style={{
+              backgroundColor: "#669fd8",
+              color: "white",
+              fontWeight: "bold",
+            }}
           >
             <Typography>
               ({alphabet}) {props.data["name"]}

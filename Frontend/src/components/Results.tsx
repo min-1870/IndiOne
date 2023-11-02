@@ -44,7 +44,7 @@ interface routeInfo {
 }
 
 const Results: React.FC = () => {
-  const [resultDataCasual, setresultDataCasual] = useState(null);
+  const [resultData, setresultData] = useState(null);
   const [itineraryResult, setItineraryResult] = useState("loading");
   const location = useLocation();
   const userInputInfo = location.state;
@@ -60,7 +60,7 @@ const Results: React.FC = () => {
     };
     const travelMode = userInputInfo["transportation"];
     const directionsService = new google.maps.DirectionsService();
-    let casualData = resultDataCasual["categorizedRoutes"]["casual"];
+    let casualData = resultData["categorizedRoutes"]["casual"];
     let casualDataLength = Number(casualData.length);
     let casualRouteInfo: routeInfo = {
       origin: { lat: 0, lng: 0 },
@@ -97,7 +97,8 @@ const Results: React.FC = () => {
     async function getRoute() {
       const results = await directionsService.route(casualRouteInfo);
       setDirectionsResponse(results);
-      console.log(casualData);
+      // console.log("Casual Data is");
+      // console.log(casualData);
     }
     useEffect(() => {
       getRoute();
@@ -147,8 +148,7 @@ const Results: React.FC = () => {
     };
     const travelMode = userInputInfo["transportation"];
     const directionsService = new google.maps.DirectionsService();
-    let localSpecialtyData =
-      resultDataCasual["categorizedRoutes"]["local_specialty"];
+    let localSpecialtyData = resultData["categorizedRoutes"]["local_specialty"];
     let localSpecialtyDataLength = Number(localSpecialtyData.length);
     let localSpecialtyRouteInfo: routeInfo = {
       origin: { lat: 0, lng: 0 },
@@ -186,7 +186,8 @@ const Results: React.FC = () => {
     async function getRoute() {
       const results = await directionsService.route(localSpecialtyRouteInfo);
       setDirectionsResponse(results);
-      console.log(localSpecialtyData);
+      // console.log("LocalSpecialtyData is ");
+      // console.log(localSpecialtyData);
     }
     useEffect(() => {
       getRoute();
@@ -236,7 +237,7 @@ const Results: React.FC = () => {
     };
     const travelMode = userInputInfo["transportation"];
     const directionsService = new google.maps.DirectionsService();
-    let qualitativeData = resultDataCasual["categorizedRoutes"]["qualitative"];
+    let qualitativeData = resultData["categorizedRoutes"]["qualitative"];
     let qualitativeDataLength = Number(qualitativeData.length);
     let qualitativeRouteInfo: routeInfo = {
       origin: { lat: 0, lng: 0 },
@@ -273,7 +274,8 @@ const Results: React.FC = () => {
     async function getRoute() {
       const results = await directionsService.route(qualitativeRouteInfo);
       setDirectionsResponse(results);
-      console.log(qualitativeData);
+      // console.log("Qualitative Data is ");
+      // console.log(qualitativeData);
     }
     useEffect(() => {
       getRoute();
@@ -323,7 +325,7 @@ const Results: React.FC = () => {
     };
     const travelMode = userInputInfo["transportation"];
     const directionsService = new google.maps.DirectionsService();
-    let shortestData = resultDataCasual["categorizedRoutes"]["shortest"];
+    let shortestData = resultData["categorizedRoutes"]["shortest"];
     let shortestDataLength = Number(shortestData.length);
     let shortestRouteInfo: routeInfo = {
       origin: { lat: 0, lng: 0 },
@@ -360,7 +362,8 @@ const Results: React.FC = () => {
     async function getRoute() {
       const results = await directionsService.route(shortestRouteInfo);
       setDirectionsResponse(results);
-      console.log(shortestData);
+      // console.log("Shortest data is");
+      // console.log(shortestData);
     }
     useEffect(() => {
       getRoute();
@@ -511,7 +514,7 @@ const Results: React.FC = () => {
   const Loading: React.FC = () => {
     return (
       <div className="main-loading-container">
-        <h1>Schedulling your itinerary...</h1>
+        <h1>Schedulling ...</h1>
         <Box sx={{ display: "flex" }}>
           <CircularProgress size={70} />
         </Box>
@@ -539,7 +542,8 @@ const Results: React.FC = () => {
         })
         .then((data) => {
           setItineraryResult("Done");
-          setresultDataCasual(data);
+          setresultData(data);
+          console.log(data);
         })
         .catch((error) => console.log(error.message));
     }

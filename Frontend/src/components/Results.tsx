@@ -176,9 +176,9 @@ const Results: React.FC = () => {
     if (travelMode === "walking") {
       localSpecialtyRouteInfo["travelMode"] = "WALKING";
     } else if (travelMode === "private") {
-      localSpecialtyRouteInfo["travelMode"] = "DRIVING";
+      localSpecialtyRouteInfo["travelMode"] = "WALKING";
     } else {
-      localSpecialtyRouteInfo["travelMode"] = "DRIVING";
+      localSpecialtyRouteInfo["travelMode"] = "WALKING";
     }
 
     let temp: any = null;
@@ -457,10 +457,12 @@ const Results: React.FC = () => {
             alignItems: "center",
             height: 50,
             pl: 2,
-            bgcolor: "background.default",
+            bgcolor: "primary.main",
           }}
         >
-          <Typography align="center">{steps[activeStep].label}</Typography>
+          <Typography align="center" color={"white"} fontWeight={"bold"}>
+            {steps[activeStep].label}
+          </Typography>
         </Paper>
         <Box
           sx={{

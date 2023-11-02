@@ -196,25 +196,13 @@ const UserBudget: React.FC = () => {
         type="radio"
         className="btn-check"
         name="btnradio"
-        id="btnradio0"
-        autoComplete="off"
-        onClick={handleBudget}
-        value="0"
-      ></input>
-      <label className="btn btn-outline-primary" htmlFor="btnradio0">
-        $
-      </label>
-      <input
-        type="radio"
-        className="btn-check"
-        name="btnradio"
         id="btnradio1"
         autoComplete="off"
         onClick={handleBudget}
         value="1"
       ></input>
       <label className="btn btn-outline-primary" htmlFor="btnradio1">
-        $$
+        $
       </label>
 
       <input
@@ -227,7 +215,7 @@ const UserBudget: React.FC = () => {
         value="2"
       ></input>
       <label className="btn btn-outline-primary" htmlFor="btnradio2">
-        $$$
+        $$
       </label>
 
       <input
@@ -240,7 +228,7 @@ const UserBudget: React.FC = () => {
         value="3"
       ></input>
       <label className="btn btn-outline-primary" htmlFor="btnradio3">
-        $$$$
+        $$$
       </label>
       <input
         type="radio"
@@ -252,7 +240,7 @@ const UserBudget: React.FC = () => {
         value="4"
       ></input>
       <label className="btn btn-outline-primary" htmlFor="btnradio4">
-        $$$$$
+        $$$$
       </label>
     </div>
   );

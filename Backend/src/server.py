@@ -13,7 +13,6 @@ def generateRoutes():
             # Parse the JSON data from the request body
             userInput = request.get_json()
             print(userInput)
-            print("aaaaaa")
 
             requireKeys = {'location', 'distance', 'time', 'duration', 'transportation', 'budget', 'template'}
 
@@ -25,7 +24,7 @@ def generateRoutes():
 
             # print(userInput)
 
-            return route.generateRoutes(userInput), 200
+            return jsonify(route.generateRoutes(userInput)), 200
         except Exception as e:
             return jsonify({"message": "Invalid JSON data", "error": str(e)}), 400
     else:

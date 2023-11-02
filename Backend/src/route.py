@@ -6,6 +6,7 @@ import copy
 from datetime import datetime, timedelta
 import database
 from bson.objectid import ObjectId
+from flask import jsonify
 
 
 
@@ -186,6 +187,8 @@ def getNextPlace(userInput, route, currentTime, places, requireTypes, avoidTypes
         "timeSpent": None,
         "endTime": None
     }
+
+    bestTotalScore = 0
     
     def validation(place, distance):
 
@@ -253,32 +256,30 @@ def getNextPlace(userInput, route, currentTime, places, requireTypes, avoidTypes
 
             newTotalScore = (ratingScore + user_ratings_totalScore + distanceScore + randomScore)/typesScore
             
-            if newTotalScore > score['total']:
+            if newTotalScore > bestTotalScore:
                 score = {
-                    'total': newTotalScore,
+                    'total': (ratingScore + user_ratings_totalScore + distanceScore)/typesScore,
                     'distance': distance,
                     'rating': ratingScore,
                     'user_ratings_total': user_ratings_totalScore,
                 }
-                result = places[key]
+                bestTotalScore = newTotalScore
+                place = places[key]
 
-    if result == None : 
+    if place == None : 
         print("getNextPlace: Cannot find any suitable next place.")
         return False   
     
-    #Save score without random bonus
-    score['total'] = (ratingScore + user_ratings_totalScore + distanceScore)/typesScore
-
     #Travel Time
     travel['timeSpent'] = TRAVEL_TIMES[userInput['transportation']]*distance
     travel['endTime'] = travel['startTime'] +  travel['timeSpent']
 
     #Place Time
-    result['startTime'] = currentTime + travel['timeSpent']
-    result['timeSpent'] = TYPES[result['type']]["duration"]
-    result['endTime'] = result['startTime'] + result['timeSpent']
+    place['startTime'] = travel['endTime']
+    place['timeSpent'] = TYPES[place['type']]["duration"]
+    place['endTime'] = place['startTime'] + place['timeSpent']
 
-    return {'travel':travel, 'place':result, 'score': score}
+    return {'travel':travel, 'place':place, 'score': score}
 
 
 def generateRoute(userInput, places, oldRoute=[]):
@@ -345,13 +346,13 @@ def generateRoute(userInput, places, oldRoute=[]):
         route.append(place)
 
     #Calculate Scores AVG * TYPES
-    typeBonus = len(set([place['type'] for place in route]))/20 * 100
+    typeScore = len(set([place['type'] for place in route]))/20 * 100
     for key in score.keys():
         if key == "distance":
             score[key] = sum(score[key])
         else:
-            score[key] = sum(score[key]) / len(score[key]) + typeBonus
-    return {'score': score, 'route': route}
+            score[key] = sum(score[key]) / len(score[key]) + typeScore
+    return {'score': copy.deepcopy(score), 'route': copy.deepcopy(route)}
 
 
 
@@ -452,7 +453,21 @@ def generateRoutes(userInput):
                 if feasibilityRoute(categorizedRoutes[key][i]['route'], places):
                     categorizedRoutes[key] = categorizedRoutes[key][i]['route']
                     passedCategories.append(key)
-                    print('success '+key)
+
+                    print("\n------------------------------------------"+key+"\n")
+                    for place in categorizedRoutes[key]:
+                        if len(place) != 0:
+                            if place['type'] == 'travel':
+                                print("     ->      start at "+str(place['startTime']))
+                                print(' . . . . . ')                                
+                                print("     <-      end at "+str(place['endTime']))
+                            else:
+                                print('     ARRIVE !!')                                
+                                print("     ->      start at "+str(place['startTime']))
+                                print(place['type'], place['rating'], place['place_id'], ' - ', place['name'])
+                                print("     <-      end at "+str(place['endTime']))
+                                print('     LEAVE !!\n')                                
+
         if len(passedCategories) == len(categorizedRoutes.keys()):
             break
     
@@ -580,8 +595,8 @@ hcmc  = {'lat':"10.777981", 'lng':"106.694449"}
 userInput = {
     'location': sydney,
     'distance': "1000",
-    'time': "12",
-    'duration': "10",
+    'time': "09",
+    'duration': "13",
     'transportation': 'public',
     'budget': "2",
     'template':'friends',

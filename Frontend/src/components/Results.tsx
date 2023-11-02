@@ -176,9 +176,9 @@ const Results: React.FC = () => {
     if (travelMode === "walking") {
       localSpecialtyRouteInfo["travelMode"] = "WALKING";
     } else if (travelMode === "private") {
-      localSpecialtyRouteInfo["travelMode"] = "DRIVING";
+      localSpecialtyRouteInfo["travelMode"] = "WALKING";
     } else {
-      localSpecialtyRouteInfo["travelMode"] = "DRIVING";
+      localSpecialtyRouteInfo["travelMode"] = "WALKING";
     }
 
     let temp: any = null;

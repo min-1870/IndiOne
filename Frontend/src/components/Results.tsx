@@ -113,6 +113,7 @@ const Results: React.FC = () => {
             width: "100%",
             height: "50%",
           }}
+          options={{ disableDefaultUI: true }}
           onLoad={(map) => setMap(map)}
         >
           <Marker>
@@ -202,6 +203,7 @@ const Results: React.FC = () => {
             width: "100%",
             height: "50%",
           }}
+          options={{ disableDefaultUI: true }}
           onLoad={(map) => setMap(map)}
         >
           <Marker>
@@ -290,6 +292,7 @@ const Results: React.FC = () => {
             width: "100%",
             height: "50%",
           }}
+          options={{ disableDefaultUI: true }}
           onLoad={(map) => setMap(map)}
         >
           <Marker>
@@ -378,6 +381,7 @@ const Results: React.FC = () => {
             width: "100%",
             height: "50%",
           }}
+          options={{ disableDefaultUI: true }}
           onLoad={(map) => setMap(map)}
         >
           <Marker>

@@ -457,10 +457,12 @@ const Results: React.FC = () => {
             alignItems: "center",
             height: 50,
             pl: 2,
-            bgcolor: "background.default",
+            bgcolor: "primary.main",
           }}
         >
-          <Typography align="center">{steps[activeStep].label}</Typography>
+          <Typography align="center" color={"white"} fontWeight={"bold"}>
+            {steps[activeStep].label}
+          </Typography>
         </Paper>
         <Box
           sx={{

@@ -53,7 +53,7 @@ def getPlaces(userInput):
 
 
 def refinePlaceResult(type_, userInput, result):    
-    REQUIRE_KEYS = ['name', 'type', 'price_level', 'rating', "place_id", 'user_ratings_total', 'geometry']
+    # REQUIRE_KEYS = ['name', 'type', 'price_level', 'rating', "place_id", 'user_ratings_total', 'geometry']
 
     #rating must be over 3.0
     if 'rating' in result.keys():
@@ -75,7 +75,7 @@ def refinePlaceResult(type_, userInput, result):
     result['type'] = type_
 
     #remove unnecessary KVs
-    result = {key: value for key, value in result.items() if key in REQUIRE_KEYS}
+    # result = {key: value for key, value in result.items() if key in REQUIRE_KEYS}
 
     return {"place_id": result["place_id"], "place": result}
 

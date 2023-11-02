@@ -503,24 +503,13 @@ const UserDistance: React.FC = () => {
       label: "1km",
     },
     {
+      value: 5,
+      label: "5km",
+    },
+
+    {
       value: 10,
       label: "10km",
-    },
-    {
-      value: 20,
-      label: "20km",
-    },
-    {
-      value: 30,
-      label: "30km",
-    },
-    {
-      value: 40,
-      label: "40km",
-    },
-    {
-      value: 50,
-      label: "50km",
     },
   ];
 
@@ -534,11 +523,11 @@ const UserDistance: React.FC = () => {
         aria-label="Custom marks"
         defaultValue={1}
         getAriaValueText={valuetext}
-        step={2}
+        step={1}
         valueLabelDisplay="auto"
         marks={marks}
         min={1}
-        max={50}
+        max={10}
         onChange={getDistance}
       />
     </Box>

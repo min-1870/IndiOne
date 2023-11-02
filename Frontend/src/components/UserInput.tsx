@@ -305,14 +305,6 @@ const UserTime: React.FC = () => {
           <MenuItem value={21}>21:00</MenuItem>
           <MenuItem value={22}>22:00</MenuItem>
           <MenuItem value={23}>23:00</MenuItem>
-          <MenuItem value={0}>0:00</MenuItem>
-          <MenuItem value={1}>1:00</MenuItem>
-          <MenuItem value={2}>2:00</MenuItem>
-          <MenuItem value={3}>3:00</MenuItem>
-          <MenuItem value={4}>4:00</MenuItem>
-          <MenuItem value={5}>5:00</MenuItem>
-          <MenuItem value={6}>6:00</MenuItem>
-          <MenuItem value={7}>7:00</MenuItem>
         </Select>
       </FormControl>
       <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
@@ -340,14 +332,6 @@ const UserTime: React.FC = () => {
           <MenuItem value={21}>21:00</MenuItem>
           <MenuItem value={22}>22:00</MenuItem>
           <MenuItem value={23}>23:00</MenuItem>
-          <MenuItem value={0}>0:00</MenuItem>
-          <MenuItem value={1}>1:00</MenuItem>
-          <MenuItem value={2}>2:00</MenuItem>
-          <MenuItem value={3}>3:00</MenuItem>
-          <MenuItem value={4}>4:00</MenuItem>
-          <MenuItem value={5}>5:00</MenuItem>
-          <MenuItem value={6}>6:00</MenuItem>
-          <MenuItem value={7}>7:00</MenuItem>
         </Select>
       </FormControl>
     </div>

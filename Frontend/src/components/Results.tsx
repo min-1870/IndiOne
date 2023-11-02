@@ -467,7 +467,6 @@ const Results: React.FC = () => {
         <Box
           sx={{
             height: window.innerHeight * 0.8,
-            maxWidth: 400,
             width: "100%",
             p: 2,
           }}
@@ -508,9 +507,14 @@ const Results: React.FC = () => {
             </Button>
           }
         />
-        <div style={{ display: "flex", justifyContent: "center" }}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
           <Button onClick={goMainPage}>
-            <HomeIcon></HomeIcon>
+            <HomeIcon style={{ fontSize: "40px" }}></HomeIcon>
           </Button>
         </div>
       </Box>
@@ -561,7 +565,9 @@ const Results: React.FC = () => {
       {itineraryResult === "loading" ? (
         <Loading></Loading>
       ) : (
-        <TextMobileStepper></TextMobileStepper>
+        <div className="result-container">
+          <TextMobileStepper></TextMobileStepper>
+        </div>
       )}
     </>
   );

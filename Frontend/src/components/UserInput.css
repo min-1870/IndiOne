@@ -437,7 +437,10 @@ body {
 
 @media only screen and (max-width: 870px) {
   .user_input_form_container {
-    height: 920px;
+    height: 900px;
+  }
+  .user_input_intro_container h1{
+    font-size: 25px;
   }
 }
 

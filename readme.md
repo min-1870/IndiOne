@@ -6,8 +6,8 @@ A mobile-friendly web application that automatically schedules itinerary based o
 
 - Team name: IndiOne
 - Members
-  - (Leader) Minseok Kim - 200134kms@gmail.com
-  - Siwoo Jung - siwoo.jg@gmail.com
+  - (Leader) Minseok Kim - 200134kms@gmail.com - Backend Dev
+  - Siwoo Jung - siwoo.jg@gmail.com - Frontend Dev
   - Seonghyun Kim - seanhyun0301@gmail.com
 
 ## Problem Statement

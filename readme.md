@@ -2,8 +2,6 @@
 
 A mobile-friendly web application that automatically schedules itinerary based on user preferences
 
-<img src="img/demo.gif" width="180">
-
 ## About Team
 
 - Team name: IndiOne

@@ -2,7 +2,7 @@
 
 A mobile-friendly web application that automatically schedules itinerary based on user preferences
 
-https://github.com/min-1870/IndiOne/assets/142607954/b26eacbd-6ffe-4d77-9196-87bf150bc3c7&autoplay=1
+https://github.com/min-1870/IndiOne/assets/142607954/b26eacbd-6ffe-4d77-9196-87bf150bc3c7
 
 ## About Team
 

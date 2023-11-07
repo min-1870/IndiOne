@@ -44,12 +44,6 @@ Selectable options are integrated into the system to allow users to customize th
     - This level corresponds to 'price_level' from Places API
   - Transportation mode
 
-- Searching
-
-  - While the server searches for routes, following page is shown
-
-    <img src="img/searching.png" width="200">
-
 - Results
 
   - Recommended routes with four different themes - **casual**, **local specialty**, **qualitative** and **shortest** - are shown

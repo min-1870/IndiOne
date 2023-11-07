@@ -524,7 +524,6 @@ const Results: React.FC = () => {
   const Loading: React.FC = () => {
     return (
       <div className="main-loading-container">
-        <h1>Schedulling ...</h1>
         <Box sx={{ display: "flex" }}>
           <CircularProgress size={70} />
         </Box>

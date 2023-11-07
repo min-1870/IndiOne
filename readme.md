@@ -2,7 +2,7 @@
 
 A mobile-friendly web application that automatically schedules itinerary based on user preferences
 
-<img src="img/demo.gif" width="180">
+<img src="img/demo.mp4" width="180">
 
 ## About Team
 
